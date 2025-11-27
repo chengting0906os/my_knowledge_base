@@ -1,0 +1,6 @@
+# IDE and Editor files
+.history/
+.vscode/
+
+# OS files
+.DS_Store
