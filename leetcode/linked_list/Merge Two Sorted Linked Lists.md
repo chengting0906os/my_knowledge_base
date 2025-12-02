@@ -62,41 +62,14 @@ Output: []
    - While both `list1` and `list2` exist:
      - If `list1.val < list2.val`:
        - `current.next = list1`
-       - `list1 = list1.next` (指針往右移)
+       - `list1 = list1.next`
      - Else:
        - `current.next = list2`
-       - `list2 = list2.next` (指針往右移)
-     - `current = current.next` (current 指針也往右移)
+       - `list2 = list2.next`
+     - `current = current.next`
 
 4. **Attach remaining nodes:**
    - If `list1` still has nodes: `current.next = list1`
    - If `list2` still has nodes: `current.next = list2`
 
-5. **Return:** `dummy.next` (dummy 始終保持在最開頭)
-
-**Pseudocode:**
-
-```python
-# Edge cases
-if not list1: return list2
-if not list2: return list1
-
-# Create dummy node
-dummy = ListNode()
-current = dummy
-
-# Merge while both exist
-while list1 and list2:
-    if list1.val < list2.val:
-        current.next = list1
-        list1 = list1.next
-    else:
-        current.next = list2
-        list2 = list2.next
-    current = current.next
-
-# Attach remaining nodes
-current.next = list1 if list1 else list2
-
-return dummy.next
-```
+5. **Return:** `dummy.next`

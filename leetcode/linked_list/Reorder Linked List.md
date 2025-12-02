@@ -60,12 +60,23 @@ Output: [2,10,4,8,6]
 ### M - Match
 
 **Pattern:**
-Linked List
+linked-list
 slow and fast
-
+reverse
 
 ### P - Plan
-split into two parts, use fast
+
+1. split into two parts, use slow and fast
+    list2 = slow
+2. reverse second linked-list
+    2.1 create prev = None
+        while list2: (Not point to None yet)
+            nxt pointer point to next listnode as mark
+            cur_head(list2).next pointer point to prev
+            prev -> cur_head(list2)
+            list2 -> nxt
+
+3. combine them
 
 ### I - Implement
 
