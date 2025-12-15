@@ -83,6 +83,9 @@ class KthLargest:
 
 ### E - Evaluate
 
-**Time Complexity:** O(n log k)
+**Time Complexity:** O(n log n + m log k)
+
+- `__init__`: O(n) heapify + O((n-k) log n) pops ≈ O(n log n)
+- `add`: O(log k) per call, m calls = O(m log k)
 
 **Space Complexity:** O(k)
