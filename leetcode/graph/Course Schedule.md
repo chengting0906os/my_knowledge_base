@@ -63,7 +63,7 @@ Output: false
 
 1. create a mp which keys are course, values are prerequisites
 2. create a visted set()
-3. 
+3.
 
 ```
 def dfs(c):
@@ -90,21 +90,20 @@ def dfs(c):
 
 4. if not def(c) return False else True
 
-
-
 - BFS
 
-1. create an indegrees = [0] * len(numCourses)
+1. create an indegrees = [0] \* len(numCourses)
 2. create an Adjacency List
+
 ```
 adj = [[] for in range(numCourses)]
 for c, pre in prerequisites:
     indegrees[c] += 1
-    adj[c].append(pre)
+    adj[pre].append(c)
 ```
 
-
 3. create a queue = deque() than append indegree = 0 course into it
+
 ```
 queue = deque()
 
@@ -115,15 +114,16 @@ for c, indegree in enumerate(indegrees):
 
 4. add termination condition - return finished == numCourses
 5. start to BFS
+
 ```
 
 while queue:
     c = queue.popleft()
     finised += 1
-    for pre in adj[c]:
-        indegree[pre] -= 1
-        if indegree[pre] == 0:
-            queue.append(pre)
+    for nxt in adj[c]:
+        indegree[nxt] -= 1
+        if indegree[nxt] == 0:
+            queue.append(nxt)
 
 ```
 
