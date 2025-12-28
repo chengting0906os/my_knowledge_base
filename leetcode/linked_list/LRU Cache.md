@@ -53,12 +53,40 @@ lRUCache.get(1);      // return -1 (not found)
 **Edge Cases:**
 
 **Key Observations:**
+- It's a double linked-list question which you can init a self.left(head) and self.right(tail) Node(0,0) as an init double linked-list than you need to insert or remove Node() between these two init-node.
+
+- Insert new node from at tail (most recent)
+- Remove from head (least recent) when no capacity
 
 ### M - Match
 
-**Pattern:**
+**Pattern:** Double Linked List
 
 ### P - Plan
+
+1. class Node:
+    self.key = key
+    self.val = val
+    self.prev = self.next = None (pointers)
+
+2. class LRUCache init: create two dummy nodes as head and tail
+
+3. implement insert method:
+    update next and prev pointers
+
+4. implement remove method:
+    update next and prev pointers
+
+5. implement get method:
+    if key not in self.cache:
+        return -1
+    else:
+        move existing Node to the tail
+
+6. implement put method:
+    add Node to the tail
+    if len(self.cache) > self.cap:
+        remove LRU node (self.head.next)
 
 ### I - Implement
 
@@ -67,5 +95,9 @@ lRUCache.get(1);      // return -1 (not found)
 ### E - Evaluate
 
 **Time Complexity:**
+get(): O(1)
+put(): O(1)
+
 
 **Space Complexity:**
+O(n)
