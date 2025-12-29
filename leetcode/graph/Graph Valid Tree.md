@@ -43,28 +43,62 @@ Output: false
 
 **Edge Cases:**
 
-```
-if len(edges) > n:
-    return False
-```
+- `edges = []` with `n = 1` → single node, valid tree → `true`
+- `edges = []` with `n > 1` → disconnected nodes → `false`
+- Disconnected sub-graphs → `false`
 
 **Key Observations:**
 
-if cycle: False
+- Valid tree conditions: **no cycle** + **all nodes connected**
+- For a tree with `n` nodes, must have exactly `n - 1` edges
+- This is an **undirected graph** (need to track parent to avoid false cycle detection)
 
 ### M - Match
 
-**Pattern:** Graph / DFS / BFS
+**Pattern:** Graph / DFS / BFS / Union Find
 
 ### P - Plan
-1. 
-```
-if len(edges) > n:
+
+1. Early termination check
+
+```python
+if len(edges) != n - 1:
     return False
 ```
 
-2. adj list
-3. 
+2. Build adjacency list (undirected → add both directions)
+
+```python
+adj = [[] for _ in range(n)]
+for a, b in edges:
+    adj[a].append(b)
+    adj[b].append(a)
+```
+
+3. DFS with parent tracking to detect cycle
+
+```python
+visited = set()
+
+def dfs(node, parent):
+    visited.add(node)
+
+    for nei in adj[node]:
+        if nei == parent:  # skip the edge we came from
+            continue
+        if nei in visited:  # cycle detected
+            return False
+        if not dfs(nei, node):
+            return False
+
+    return True
+```
+
+4. Check: no cycle + all nodes visited
+
+```python
+return dfs(0, -1) and len(visited) == n
+```
 
 ### I - Implement
 
@@ -75,9 +109,12 @@ class Solution:
 ```
 
 ### R - Review
+- Need to check len(visited) == n
 
 ### E - Evaluate
 
 **Time Complexity:**
+O(V + E)
 
 **Space Complexity:**
+O(V + E)
