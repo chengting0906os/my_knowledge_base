@@ -85,6 +85,49 @@ for i in range(1, amount + 1):
 return dp[amount] if dp[amount] != float('inf') else -1
 ```
 
+- BFS (level-order traversal, first to reach 0 is the answer)
+
+0. Edge case
+
+```python
+if amount == 0:
+    return 0
+```
+
+1. Create deque with tuple (remaining_amount, steps)
+
+```python
+q = deque([(amount, 0)])  # (amount, step)
+```
+
+2. Create visited set to avoid revisiting same amount
+
+```python
+visited = set([amount])
+```
+
+3. BFS: pop from queue, try each coin, first to reach 0 wins
+
+```python
+while q:
+    curr, step = q.popleft()
+    for c in coins:
+        nxt = curr - c
+        if nxt == 0:
+            return step + 1
+        if nxt > 0 and nxt not in visited:
+            q.append((nxt, step + 1))
+            visited.add(nxt)
+```
+
+4. Return -1 if amount is not reachable
+
+```python
+return -1
+```
+
+
+
 ### I - Implement
 
 ```python
