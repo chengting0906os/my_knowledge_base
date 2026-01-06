@@ -61,6 +61,30 @@ Output: 0
 
 ### P - Plan
 
+- DP
+
+1. Create dp array where `dp[i]` = min coins needed to make amount `i`
+
+```python
+dp = [float('inf')] * (amount + 1)
+dp[0] = 0  # base case: 0 coins needed to make amount 0
+```
+
+2. For each amount `i`, try using each coin `c`: take min of current `dp[i]` vs using coin `c` (which is `1 + dp[i - c]`)
+
+```python
+for i in range(1, amount + 1):
+    for c in coins:
+        if i - c >= 0:
+            dp[i] = min(dp[i], 1 + dp[i - c])
+```
+
+3. Return result (check if amount is reachable)
+
+```python
+return dp[amount] if dp[amount] != float('inf') else -1
+```
+
 ### I - Implement
 
 ```python
@@ -74,5 +98,7 @@ class Solution:
 ### E - Evaluate
 
 **Time Complexity:**
+O(c*amount)
 
 **Space Complexity:**
+O(amount)
