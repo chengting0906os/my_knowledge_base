@@ -40,7 +40,7 @@ Output: 2
 **Edge Cases:**
 
 **Key Observations:**
-1. need to record
+1. need to record 
 
 ### M - Match
 
