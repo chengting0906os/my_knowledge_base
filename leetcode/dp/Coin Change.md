@@ -126,6 +126,36 @@ while q:
 return -1
 ```
 
+- DFS with memoization (recursively try every coin, cache results)
+
+1. Create memo dict with base case
+
+```python
+memo = {0: 0}  # 0 coins needed to make amount 0
+```
+
+2. Define DFS function
+
+```python
+def dfs(rem):
+    if rem in memo:
+        return memo[rem]
+
+    res = float('inf')
+    for c in coins:
+        if rem - c >= 0:
+            res = min(res, 1 + dfs(rem - c))
+
+    memo[rem] = res
+    return res
+```
+
+3. Call DFS and return result
+
+```python
+ans = dfs(amount)
+return ans if ans != float('inf') else -1
+```
 
 
 ### I - Implement
