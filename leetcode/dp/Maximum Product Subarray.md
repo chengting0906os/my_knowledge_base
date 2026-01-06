@@ -40,13 +40,32 @@ Output: 2
 **Edge Cases:**
 
 **Key Observations:**
-1. need to record 
+
+- Need to track both `min_product` and `max_product` at each iteration, because multiplying by a negative number can flip min to max
 
 ### M - Match
 
 **Pattern:**
 
 ### P - Plan
+
+1. init variable
+
+```python
+min_product = nums[0]
+max_product = nums[0]
+res = nums[0]
+```
+
+2. Iterate from second element
+
+```python
+for n in nums[1:]:
+    tmp = n * max_product
+    # update max_product
+    # update min_product (using tmp)
+    # update res with current max_product
+```
 
 ### I - Implement
 
@@ -58,8 +77,12 @@ class Solution:
 
 ### R - Review
 
+- Remember to save `max_product` in a temp variable before updating, because `min_product` calculation needs the original `max_product` value
+
 ### E - Evaluate
 
 **Time Complexity:**
+O(n)
 
 **Space Complexity:**
+O(1)
