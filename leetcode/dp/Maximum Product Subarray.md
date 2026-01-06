@@ -45,7 +45,7 @@ Output: 2
 
 ### M - Match
 
-**Pattern:**
+**Pattern:** DP
 
 ### P - Plan
 
