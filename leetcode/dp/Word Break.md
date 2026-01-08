@@ -57,6 +57,30 @@ Output: false
 **Pattern:** DP
 
 ### P - Plan
+- Top-Down
+Approach: start from the beginning and try each dictionary word as the next segment; if any path reaches the end, return True. To avoid repeated work, use memo to record whether each index is segmentable.
+
+1. `memo = {len(s): True}` (base case: empty suffix is breakable)
+
+2. `dfs(i)` returns whether `s[i:]` can be segmented
+```text
+def dfs(i):
+    # if i reaches the end (memo[len(s)] = True), return True
+    # iterate wordDict and try each word from position i
+    # if s[i:i+len(word)] matches, recurse on dfs(i + len(word))
+    # if any recursion is True, memo[i] = True; otherwise memo[i] = False
+```
+3. return `dfs(0)`
+
+- Bottom-Up
+
+1. create `dp = [False] * (len(s) + 1)`
+2. `dp[len(s)] = True` (empty suffix is breakable)
+3. iterate `i` from the end to the start; for each word:
+   - if `s[i:i+len(word)]` matches, set `dp[i] = dp[i+len(word)]`
+   - if `dp[i]` becomes True, break the inner loop (no need to try more words)
+4. return `dp[0]`
+
 
 ### I - Implement
 
@@ -67,9 +91,15 @@ class Solution:
 ```
 
 ### R - Review
+Remember to break early when `dp[i]` becomes True in the bottom-up method.
 
 ### E - Evaluate
 
+n = len(s)
+m = len(wordDict)
+t = max word length
 **Time Complexity:**
+O(n*m*t)
 
 **Space Complexity:**
+O(n)
