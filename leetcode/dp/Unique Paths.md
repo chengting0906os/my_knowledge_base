@@ -42,9 +42,38 @@ Output: 6
 
 ### M - Match
 
-**Pattern:**
+**Pattern:** DP
 
 ### P - Plan
+
+**Bottom-Up DP (2D Array) - O(m×n) Space**
+
+1. Create a `m x n` 2D DP list
+2. **Base Case:**
+   - `dp[0][j] = 1` (first row: only from left)
+   - `dp[i][0] = 1` (first col: only from above)
+3. **Transition:** `dp[i][j] = dp[i-1][j] + dp[i][j-1]`
+4. Return `dp[m-1][n-1]`
+
+**Space Optimized (1D Array) - O(n) Space**
+
+Each row only depends on previous row → compress to 1D:
+
+1. Create `dp = [1] * n` (first row all 1s)
+2. **Transition:** For each row (m-1 times):
+   - `dp[j] = dp[j] + dp[j-1]`
+     - `dp[j]` (before update) = from above (previous row)
+     - `dp[j-1]` (already updated) = from left (same row)
+
+```python
+dp = [1] * n
+for _ in range(1, m):
+    for j in range(1, n):
+        dp[j] = dp[j] + dp[j-1]
+return dp[-1]
+```
+
+3. Return `dp[-1]`
 
 ### I - Implement
 
@@ -59,5 +88,7 @@ class Solution:
 ### E - Evaluate
 
 **Time Complexity:**
+O(m x n)
 
 **Space Complexity:**
+O(n)
