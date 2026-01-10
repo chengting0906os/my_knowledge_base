@@ -40,6 +40,7 @@ Output: false
 **Edge Cases:**
 
 **Key Observations:**
+
 - Equal partition means each subset sums to `total // 2`
 - If total is odd → impossible to split evenly
 - This is a 0/1 Knapsack problem: can we select items to reach exactly `target`?
@@ -60,19 +61,20 @@ Output: false
 4. Define `dfs(i, remaining)` → returns True if we can make `remaining` using items from index `i` onwards
 
    **Base cases:**
+
    - `remaining == 0` → return `True` (found valid subset)
    - `i >= len(nums)` → return `False` (no more items to try)
    - `remaining < 0` → return `False` (exceeded target)
    - `memo[i][remaining] != -1` → return cached result
 
    **Recursion (skip OR take):**
+
    - `skip = dfs(i + 1, remaining)` → skip current item
    - `take = dfs(i + 1, remaining - nums[i])` → take current item
    - `memo[i][remaining] = skip or take`
    - return `memo[i][remaining]`
 
 5. Return `dfs(0, target)`
-
 
 **Bottom-Up DP Approach:**
 
@@ -105,7 +107,63 @@ DP Table Structure (nums = [1, 5, 11, 5], target = 11):
 
 6. Return `dp[n][target]`
 
-**Dynamic Programming (Optimal)**
+**Dynamic Programming (Space Optimized - 1D Array)**
+
+1. If `sum(nums)` is odd → return `False` (can't split evenly)
+2. Set `target = sum(nums) // 2`
+3. Create 1D DP array: `dp = [False] * (target + 1)`
+4. **Base Case:** `dp[0] = True` (empty subset sums to 0)
+
+5. **Transition:** For each `num` in `nums`:
+
+   - Iterate **backwards** from `target` down to `num`
+   - `dp[s] = dp[s] OR dp[s - num]`
+     - `dp[s]` = skip (already achievable without current num)
+     - `dp[s - num]` = take (achievable if remaining sum was achievable)
+
+   ```
+   for num in nums:
+       for s in range(target, num - 1, -1):  # backwards!
+           dp[s] = dp[s] or dp[s - num]
+   ```
+
+6. Return `dp[target]`
+
+**Alternative: Forward iteration with copy**
+
+Instead of iterating backwards, copy the array each round:
+
+```python
+for num in nums:
+    next_dp = dp[:]                      # copy previous round
+    for s in range(num, target + 1):
+        next_dp[s] = next_dp[s] or dp[s - num]
+    dp = next_dp
+```
+
+- `dp[s - num]` reads from **previous round** → no double-counting
+- Trade-off: O(target) extra copy per iteration vs. backwards trick
+
+**Why These Approaches Work (Avoiding Double-Counting)**
+
+In 0/1 Knapsack, each item can only be used **once**. The key is ensuring `dp[s - num]` reads from the **previous round** (before considering current item).
+
+| Approach            | How it ensures previous round                       |
+| ------------------- | --------------------------------------------------- |
+| Backwards iteration | `dp[s - num]` hasn't been updated yet in this round |
+| Forward with copy   | `dp[s - num]` reads from original array             |
+
+**Example of forward iteration WITHOUT copy (WRONG):**
+
+`nums = [1, 2, 3]`, `target = 3`, processing `num = 1`:
+
+```
+Initial: dp = [T, F, F, F]
+
+dp[1] = dp[1] OR dp[0] = T    →  dp = [T, T, F, F]
+dp[2] = dp[2] OR dp[1] = T    →  dp = [T, T, T, F]  ← dp[1] was just updated!
+dp[3] = dp[3] OR dp[2] = T    →  dp = [T, T, T, T]  ← Used 1 three times!
+```
 
 ### I - Implement
 
@@ -120,5 +178,6 @@ class Solution:
 ### E - Evaluate
 
 **Time Complexity:**
-
+O(n\*target)
 **Space Complexity:**
+O(target)
