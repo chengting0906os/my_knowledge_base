@@ -40,6 +40,11 @@ Output: false
 **Edge Cases:**
 
 **Key Observations:**
+- Equal partition means each subset sums to `total // 2`
+- If total is odd → impossible to split evenly
+- This is a 0/1 Knapsack problem: can we select items to reach exactly `target`?
+- For each item: **skip** (don't include) or **take** (include in subset)
+- If we take item, remaining sum `curr_sum - num` must be achievable from previous items
 
 ### M - Match
 
@@ -99,6 +104,8 @@ DP Table Structure (nums = [1, 5, 11, 5], target = 11):
      - `dp[i][curr_sum] = skip or take`
 
 6. Return `dp[n][target]`
+
+**Dynamic Programming (Optimal)**
 
 ### I - Implement
 
