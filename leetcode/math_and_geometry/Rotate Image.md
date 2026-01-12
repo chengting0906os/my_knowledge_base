@@ -55,16 +55,31 @@ Output: [
 **Edge Cases:**
 
 **Key Observations:**
+
 - Rotate 90° clockwise = **Transpose** + **Reverse each row**
 - Transpose: swap `matrix[i][j]` ↔ `matrix[j][i]` (along main diagonal)
-- After rotation: `matrix[j][n-1-i]` ← original `matrix[i][j]` 
-
+- After rotation: `matrix[j][n-1-i]` ← original `matrix[i][j]`
 
 ### M - Match
 
 **Pattern:**
 
 ### P - Plan
+
+**Approach: Reverse + Transpose**
+
+1. **Reverse rows** (flip upside down)
+
+   ```python
+   matrix.reverse()  # in-place
+   ```
+
+2. **Transpose** (swap along main diagonal)
+   ```python
+   for i in range(n):
+       for j in range(i + 1, n):  # j > i to avoid double swap
+           matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+   ```
 
 ### I - Implement
 
@@ -79,5 +94,7 @@ class Solution:
 ### E - Evaluate
 
 **Time Complexity:**
+O(n²): n(n-1)/2
 
 **Space Complexity:**
+O(1)
