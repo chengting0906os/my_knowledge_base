@@ -50,20 +50,44 @@ Output: 0.12500
 
 **Key Observations:**
 
+- use `abs(n)`, If `n < 0` return `1 / res`
+- return `1` while `n = 0`
+- Exponent `n` repeatedly divided by 2 always ends with `1 → 0` (base case: `n == 0` returns `1`)
+
 ### M - Match
 
 > - See if this problem matches a problem category (e.g. Strings/Arrays) and strategies or patterns within the category.
 
-**Pattern:** Binary Exponentiation
+**Pattern:** Binary Exponentiation, DFS, iterative
 
 ### P - Plan
 
 > - Sketch visualizations and write pseudocode.
 > - Walk through a high level implementation with an existing diagram.
 
-- DFS
+**Base Case:** `n == 0` returns `1`
 
-- BFS 
+**DFS (Recursive)**
+
+1. Create a helper function `dfs(base, exp)`:
+   - **Base case:** if `exp == 0` return `1`
+   - Recursively compute `half = dfs(base, exp // 2)`
+   - If `exp % 2 == 0`: return `half * half`
+   - Else: return `half * half * base`
+2. Call `dfs(x, abs(n))`
+3. Return `1 / res` if `n < 0` else `res`
+
+**Iterative**
+
+1. Edge case: if `x == 0` return `0`
+2. Init variables:
+   - `exponent = abs(n)`
+   - `res = 1`
+3. While `exponent > 0`:
+   - If `exponent % 2 == 1`: `res *= x` # FISRT round and LAST round
+   - `x *= x`
+   - `exponent //= 2`
+4. Return `1 / res` if `n < 0` else `res`
 
 ### I - Implement
 
@@ -86,5 +110,6 @@ class Solution:
 > - Discuss any pros and cons of the solution.
 
 **Time Complexity:**
-
+O(log n) - exponent repeatedly divided by 2
 **Space Complexity:**
+O(1)
