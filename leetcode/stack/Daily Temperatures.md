@@ -40,24 +40,24 @@ Output: [1,1,1,1,0]
 
 ### U - Understand
 
-**Test Cases:**
+> - Ask clarifying questions and use examples to understand what the interviewer wants out of this problem.
+> - Choose a "happy path" test input, different than the one provided, and a few edge case inputs.
+> - Verify that you and the interviewer are aligned on the expected inputs and outputs.
 
-- Increasing sequence: `[1,2,3,4,5]` → `[1,1,1,1,0]`
-- Decreasing sequence: `[5,4,3,2,1]` → `[0,0,0,0,0]`
-- Mixed values with duplicates
-
-**Edge Cases:**
-
-- Single element
-- All same temperatures
+**Key Observations:**
 
 ### M - Match
+
+> - See if this problem matches a problem category (e.g. Strings/Arrays) and strategies or patterns within the category.
 
 **Pattern:** Monotonic Stack
 
 **Approach:** Use a deque/stack to store indices. When encountering a temperature larger than previous temperatures in the stack, pop them and calculate the difference in indices.
 
 ### P - Plan
+
+> - Sketch visualizations and write pseudocode.
+> - Walk through a high level implementation with an existing diagram.
 
 1. **Initialize:**
    - `stack = []` (stores indices)
@@ -72,6 +72,8 @@ Output: [1,1,1,1,0]
 3. **Return** result
 
 ### I - Implement
+
+> - Implement the solution (make sure to know what level of detail the interviewer wants).
 
 ```python
 def dailyTemperatures(temperatures):
@@ -88,6 +90,9 @@ def dailyTemperatures(temperatures):
 ```
 
 ### R - Review
+
+> - Re-check that your algorithm solves the problem by running through important examples.
+> - Go through it as if you are debugging it, assuming there is a bug.
 
 **Test with Example 1:**
 
@@ -109,17 +114,21 @@ result = [1,4,1,2,1,0,0] ✓
 
 ### E - Evaluate
 
-**Time Complexity:** `O(n)`
+> - Finish by giving space and run-time complexity.
+> - Discuss any pros and cons of the solution.
+
+**Time Complexity:**
+`O(n)`
 
 - Each element is pushed and popped at most once
 
-**Space Complexity:** `O(n)`
+**Space Complexity:**
+`O(n)`
 
 - Stack can contain up to n elements in worst case (decreasing sequence)
 
 
 
---- 
+---
 
 DP
-

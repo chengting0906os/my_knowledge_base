@@ -35,9 +35,9 @@ Output: 2
 
 ### U - Understand
 
-**Test Cases:**
-
-**Edge Cases:**
+> - Ask clarifying questions and use examples to understand what the interviewer wants out of this problem.
+> - Choose a "happy path" test input, different than the one provided, and a few edge case inputs.
+> - Verify that you and the interviewer are aligned on the expected inputs and outputs.
 
 **Key Observations:**
 
@@ -45,9 +45,14 @@ Output: 2
 
 ### M - Match
 
+> - See if this problem matches a problem category (e.g. Strings/Arrays) and strategies or patterns within the category.
+
 **Pattern:** DP
 
 ### P - Plan
+
+> - Sketch visualizations and write pseudocode.
+> - Walk through a high level implementation with an existing diagram.
 
 1. init variable
 
@@ -69,6 +74,8 @@ for n in nums[1:]:
 
 ### I - Implement
 
+> - Implement the solution (make sure to know what level of detail the interviewer wants).
+
 ```python
 class Solution:
     def maxProduct(self, nums: List[int]) -> int:
@@ -77,9 +84,15 @@ class Solution:
 
 ### R - Review
 
+> - Re-check that your algorithm solves the problem by running through important examples.
+> - Go through it as if you are debugging it, assuming there is a bug.
+
 - Remember to save `max_product` in a temp variable before updating, because `min_product` calculation needs the original `max_product` value
 
 ### E - Evaluate
+
+> - Finish by giving space and run-time complexity.
+> - Discuss any pros and cons of the solution.
 
 **Time Complexity:**
 O(n)

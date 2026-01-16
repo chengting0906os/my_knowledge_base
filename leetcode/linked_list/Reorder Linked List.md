@@ -51,20 +51,24 @@ Output: [2,10,4,8,6]
 
 ### U - Understand
 
-**Test Cases:**
-
-**Edge Cases:**
+> - Ask clarifying questions and use examples to understand what the interviewer wants out of this problem.
+> - Choose a "happy path" test input, different than the one provided, and a few edge case inputs.
+> - Verify that you and the interviewer are aligned on the expected inputs and outputs.
 
 **Key Observations:**
 
 ### M - Match
 
-**Pattern:**
-linked-list
+> - See if this problem matches a problem category (e.g. Strings/Arrays) and strategies or patterns within the category.
+
+**Pattern:** linked-list
 slow and fast
 reverse
 
 ### P - Plan
+
+> - Sketch visualizations and write pseudocode.
+> - Walk through a high level implementation with an existing diagram.
 
 1. split into two parts, use slow and fast
     list2 = slow
@@ -80,9 +84,17 @@ reverse
 
 ### I - Implement
 
+> - Implement the solution (make sure to know what level of detail the interviewer wants).
+
 ### R - Review
 
+> - Re-check that your algorithm solves the problem by running through important examples.
+> - Go through it as if you are debugging it, assuming there is a bug.
+
 ### E - Evaluate
+
+> - Finish by giving space and run-time complexity.
+> - Discuss any pros and cons of the solution.
 
 **Time Complexity:**
 

@@ -39,9 +39,9 @@ Output: [3,4]
 
 ### U - Understand
 
-**Test Cases:**
-
-**Edge Cases:**
+> - Ask clarifying questions and use examples to understand what the interviewer wants out of this problem.
+> - Choose a "happy path" test input, different than the one provided, and a few edge case inputs.
+> - Verify that you and the interviewer are aligned on the expected inputs and outputs.
 
 **Key Observations:**
 
@@ -51,9 +51,14 @@ Output: [3,4]
 
 ### M - Match
 
+> - See if this problem matches a problem category (e.g. Strings/Arrays) and strategies or patterns within the category.
+
 **Pattern:** Union Find
 
 ### P - Plan
+
+> - Sketch visualizations and write pseudocode.
+> - Walk through a high level implementation with an existing diagram.
 
 1. Initialize DSU with `parent[i] = i` and `rank[i] = 1`
 2. Implement `find(x)` with path compression
@@ -64,6 +69,8 @@ Output: [3,4]
 
 ### I - Implement
 
+> - Implement the solution (make sure to know what level of detail the interviewer wants).
+
 ```python
 class Solution:
     def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
@@ -72,10 +79,18 @@ class Solution:
 
 ### R - Review
 
+> - Re-check that your algorithm solves the problem by running through important examples.
+> - Go through it as if you are debugging it, assuming there is a bug.
+
 ### E - Evaluate
 
-**Time Complexity:** O(E × α(V)) ≈ O(E)
+> - Finish by giving space and run-time complexity.
+> - Discuss any pros and cons of the solution.
+
+**Time Complexity:**
+O(E × α(V)) ≈ O(E)
 
 - α is inverse Ackermann, practically constant
 
-**Space Complexity:** O(V)
+**Space Complexity:**
+O(V)

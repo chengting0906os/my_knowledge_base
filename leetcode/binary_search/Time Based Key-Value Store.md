@@ -9,11 +9,11 @@ Implement a time-based key-value data structure that supports:
 
 Implement the `TimeMap` class:
 
-| Method | Description |
-|--------|-------------|
-| `TimeMap()` | Initializes the object |
-| `void set(String key, String value, int timestamp)` | Stores the key with the value at the given timestamp |
-| `String get(String key, int timestamp)` | Returns the most recent value of key if `set` was previously called on it and the most recent timestamp for that key `prev_timestamp <= timestamp`. If there are no values, returns `""` |
+| Method                                              | Description                                                                                                                                                                              |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TimeMap()`                                         | Initializes the object                                                                                                                                                                   |
+| `void set(String key, String value, int timestamp)` | Stores the key with the value at the given timestamp                                                                                                                                     |
+| `String get(String key, int timestamp)`             | Returns the most recent value of key if `set` was previously called on it and the most recent timestamp for that key `prev_timestamp <= timestamp`. If there are no values, returns `""` |
 
 > **Note:** For all calls to `set`, the timestamps are in strictly increasing order.
 
@@ -53,6 +53,10 @@ timeMap.get("alice", 3)           # return "sad"
 
 ### U - Understand
 
+> - Ask clarifying questions and use examples to understand what the interviewer wants out of this problem.
+> - Choose a "happy path" test input, different than the one provided, and a few edge case inputs.
+> - Verify that you and the interviewer are aligned on the expected inputs and outputs.
+
 **Test Cases:**
 
 - `set("a", "v1", 1)`, `get("a", 1)` → `"v1"`
@@ -72,17 +76,24 @@ timeMap.get("alice", 3)           # return "sad"
 
 ### M - Match
 
+> - See if this problem matches a problem category (e.g. Strings/Arrays) and strategies or patterns within the category.
+
 **Pattern:** Binary Search
 
 - Since timestamps are strictly increasing, we can use binary search to find the largest timestamp ≤ target
 
 ### P - Plan
 
+> - Sketch visualizations and write pseudocode.
+> - Walk through a high level implementation with an existing diagram.
+
 1. Use `defaultdict(list)` to store `key -> [[value, timestamp], ...]`
 2. `set`: Append `[value, timestamp]` to the list (already sorted due to strictly increasing timestamps)
 3. `get`: Use binary search to find the rightmost timestamp ≤ target timestamp
 
 ### I - Implement
+
+> - Implement the solution (make sure to know what level of detail the interviewer wants).
 
 ```python
 class TimeMap:
@@ -99,11 +110,17 @@ class TimeMap:
 
 ### R - Review
 
+> - Re-check that your algorithm solves the problem by running through important examples.
+> - Go through it as if you are debugging it, assuming there is a bug.
+
 ### E - Evaluate
+
+> - Finish by giving space and run-time complexity.
+> - Discuss any pros and cons of the solution.
 
 **Time Complexity:**
 set: O(1)
 get: O(n)
-**Space Complexity:** O(n)
 
-
+**Space Complexity:**
+O(n)

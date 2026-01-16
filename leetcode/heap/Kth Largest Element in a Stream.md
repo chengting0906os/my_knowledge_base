@@ -50,17 +50,22 @@ kthLargest.add(8)   # return 6
 
 ### U - Understand
 
-**Test Cases:**
-
-**Edge Cases:**
+> - Ask clarifying questions and use examples to understand what the interviewer wants out of this problem.
+> - Choose a "happy path" test input, different than the one provided, and a few edge case inputs.
+> - Verify that you and the interviewer are aligned on the expected inputs and outputs.
 
 **Key Observations:**
 
 ### M - Match
 
+> - See if this problem matches a problem category (e.g. Strings/Arrays) and strategies or patterns within the category.
+
 **Pattern:** Min Heap
 
 ### P - Plan
+
+> - Sketch visualizations and write pseudocode.
+> - Walk through a high level implementation with an existing diagram.
 
 1. `__init__`: Heapify nums list
 2. `__init__`: Pop until `len(heap) == k`
@@ -68,6 +73,8 @@ kthLargest.add(8)   # return 6
 4. `add`: Return `heap[0]` (the kth largest)
 
 ### I - Implement
+
+> - Implement the solution (make sure to know what level of detail the interviewer wants).
 
 ```python
 class KthLargest:
@@ -81,11 +88,19 @@ class KthLargest:
 
 ### R - Review
 
+> - Re-check that your algorithm solves the problem by running through important examples.
+> - Go through it as if you are debugging it, assuming there is a bug.
+
 ### E - Evaluate
 
-**Time Complexity:** O(n log n + m log k)
+> - Finish by giving space and run-time complexity.
+> - Discuss any pros and cons of the solution.
+
+**Time Complexity:**
+O(n log n + m log k)
 
 - `__init__`: O(n) heapify + O((n-k) log n) pops ≈ O(n log n)
 - `add`: O(log k) per call, m calls = O(m log k)
 
-**Space Complexity:** O(k)
+**Space Complexity:**
+O(k)
