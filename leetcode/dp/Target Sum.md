@@ -55,6 +55,22 @@ Output: 3
 > - Sketch visualizations and write pseudocode.
 > - Walk through a high level implementation with an existing diagram.
 
+- [2,2,2]
+- you need to use last dict and don't update it in this round
+- dp = [defautdict(int) for _ in range(len(nums)+1)]
+- dp[0][0] = 1
+-
+
+```
+for i in range(1, len(nums)+1):
+    num = nums[i-1]
+    for s, count in dp[i-1].items()
+        dp[i][s-num] += count
+        dp[i][s+num] += count
+
+    return dp[-1][target]
+```
+
 ### I - Implement
 
 > - Implement the solution (make sure to know what level of detail the interviewer wants).
@@ -70,11 +86,15 @@ class Solution:
 > - Re-check that your algorithm solves the problem by running through important examples.
 > - Go through it as if you are debugging it, assuming there is a bug.
 
+- If you don't use `defaultdict(int)`, use `dp[i].get(s - num, 0)` and `dp[i].get(s + num, 0)`; otherwise you might hit a `KeyError`.
+
 ### E - Evaluate
 
 > - Finish by giving space and run-time complexity.
 > - Discuss any pros and cons of the solution.
 
 **Time Complexity:**
+O(n)
 
 **Space Complexity:**
+O(1)
