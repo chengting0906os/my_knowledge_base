@@ -54,6 +54,18 @@ Output: [6]
 > - Sketch visualizations and write pseudocode.
 > - Walk through a high level implementation with an existing diagram.
 
+- init
+  - mp = {}
+  - res = []
+  - farthest = 0
+  - first = 0
+- traverse and record biggest idx of char using {}
+- traverse and update farthest every step within substring
+  - if i == farthest means it already reach this substring's end
+    - append `farthest - first + 1` to res
+    - update first to i + 1, which is next substring's start
+- `return res`
+
 ### I - Implement
 
 > - Implement the solution (make sure to know what level of detail the interviewer wants).
@@ -75,5 +87,7 @@ class Solution:
 > - Discuss any pros and cons of the solution.
 
 **Time Complexity:**
+O(n)
 
 **Space Complexity:**
+O(1)
