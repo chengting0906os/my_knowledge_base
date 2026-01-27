@@ -57,6 +57,19 @@ Output: [[1,2],[3,5],[6,7],[9,10]]
 > - Sketch visualizations and write pseudocode.
 > - Walk through a high level implementation with an existing diagram.
 
+1. init
+   - res = []
+   - i = 0
+   - n = len(intervals)
+2. while i < n and intervals[i][1] < newInterval[0]:
+   - append intervals[i] to res (no overlap, completely before)
+   - i += 1
+3. while i < n and intervals[i][0] <= newInterval[1]:
+   - merge: newInterval = [min of starts, max of ends]
+   - i += 1
+   - after loop, append merged newInterval to res
+4. return res + intervals[i:]
+
 ### I - Implement
 
 > - Implement the solution (make sure to know what level of detail the interviewer wants).
@@ -78,5 +91,7 @@ class Solution:
 > - Discuss any pros and cons of the solution.
 
 **Time Complexity:**
+O(n)
 
 **Space Complexity:**
+O(1) + O(n)
