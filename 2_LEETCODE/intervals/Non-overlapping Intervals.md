@@ -88,5 +88,7 @@ class Solution:
 > - Discuss any pros and cons of the solution.
 
 **Time Complexity:**
+O(nlogn)
 
 **Space Complexity:**
+O(1)
