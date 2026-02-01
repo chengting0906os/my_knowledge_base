@@ -1,0 +1,1 @@
+You can use AWS WAF web access control lists (web ACLs) to help inimize the erffects

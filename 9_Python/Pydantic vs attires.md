@@ -1,0 +1,1 @@
+https://threeofwands.com/why-i-use-attrs-instead-of-pydantic/

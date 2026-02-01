@@ -1,0 +1,1 @@
+# 什麼是水平擴展 (Horizontal scaling)？什麼是垂直擴展 (Vertical scaling)？

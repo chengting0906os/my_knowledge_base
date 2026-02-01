@@ -1,0 +1,1 @@
+tests/http_gateway/pyvmomi_vcenter_client_register_vm_unit_test.py::TestRegisterVm::test_register_vm_calls_register_task_with_pool  這個會卡住 應該是沒 patch 好 處理一下
