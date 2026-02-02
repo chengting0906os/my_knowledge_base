@@ -138,10 +138,14 @@
     如果可以改變公司一件事，您會想改變什麼？
     - 提問目的：委婉了解公司的潛在問題
 
+28. **Since joining, what has been your biggest personal growth? And what support from the company helped you the most?**
+    從入職到現在，你覺得自己最大的成長是什麼？公司給你最大的幫助是什麼？
+    - 提問目的：了解公司實際提供的成長機會與資源，從面試官的親身經歷評估發展潛力
+
 ---
 
 ## 公司狀況
 
-28. **What is the company's main source of revenue?**
+29. **What is the company's main source of revenue?**
     公司目前的主要營收來源是什麼？
     - 提問目的：評估公司穩定性與發展前景
