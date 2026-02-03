@@ -1,31 +1,43 @@
-# Valid Anagram
+# Two Sum
 
 ## Problem Description
 
-Given two strings `s` and `t`, return `true` if the two strings are anagrams of each other, otherwise return `false`.
+Given an array of integers `nums` and an integer `target`, return the indices `i` and `j` such that `nums[i] + nums[j] == target` and `i != j`.
 
-An anagram is a string that contains the exact same characters as another string, but the order of the characters can be different.
+You may assume that every input has exactly one pair of indices `i` and `j` that satisfy the condition.
+
+Return the answer with the smaller index first.
 
 ## Examples
 
 ### Example 1
 
 ```text
-Input: s = "racecar", t = "carrace"
-Output: true
+Input: nums = [3,4,5,6], target = 7
+Output: [0,1]
+Explanation: nums[0] + nums[1] == 7, so we return [0, 1].
 ```
 
 ### Example 2
 
 ```text
-Input: s = "jar", t = "jam"
-Output: false
+Input: nums = [4,5,6], target = 10
+Output: [0,2]
+```
+
+### Example 3
+
+```text
+Input: nums = [5,5], target = 10
+Output: [0,1]
 ```
 
 ## Constraints
 
-- `1 <= s.length, t.length <= 5 * 10^4`
-- `s` and `t` consist of lowercase English letters
+- `2 <= nums.length <= 1000`
+- `-10,000,000 <= nums[i] <= 10,000,000`
+- `-10,000,000 <= target <= 10,000,000`
+- Only one valid answer exists.
 
 ---
 
@@ -50,19 +62,13 @@ Output: false
 > - Sketch visualizations and write pseudocode.
 > - Walk through a high level implementation with an existing diagram.
 
-1. Early return: if `len(s) != len(t)`, return `False`
-2. `mp = Counter(s)`
-3. Traverse `t`, for each char `mp[char] -= 1`
-4. Traverse `mp.values()`, if any value `!= 0`, return `False`
-5. Return `True`
-
 ### I - Implement
 
 > - Implement the solution (make sure to know what level of detail the interviewer wants).
 
 ```python
 class Solution:
-    def isAnagram(self, s: str, t: str) -> bool:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
         pass
 ```
 
@@ -77,7 +83,5 @@ class Solution:
 > - Discuss any pros and cons of the solution.
 
 **Time Complexity:**
-O(n+m)
 
 **Space Complexity:**
-O(26) = O(1)
