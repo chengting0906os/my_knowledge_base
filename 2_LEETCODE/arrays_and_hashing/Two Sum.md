@@ -61,6 +61,11 @@ Output: [0,1]
 
 > - Sketch visualizations and write pseudocode.
 > - Walk through a high level implementation with an existing diagram.
+1. Init
+   - `mp = {}` (value -> index)
+2. Traverse with enumerate `(i, n)`
+   - If `target - n` in `mp`, return `[mp[target - n], i]`
+   - Else `mp[n] = i`
 
 ### I - Implement
 
