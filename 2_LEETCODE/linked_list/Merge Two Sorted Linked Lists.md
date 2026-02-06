@@ -55,33 +55,20 @@ Output: []
 
 > - Sketch visualizations and write pseudocode.
 > - Walk through a high level implementation with an existing diagram.
-
-1. **Handle edge cases:**
-   - If `list1` is `None`, return `list2`
-   - If `list2` is `None`, return `list1`
-
-2. **Create dummy node:**
-
-   ```python
-   dummy = ListNode()
-   current = dummy
-   ```
-
-3. **Merge two lists:**
-   - While both `list1` and `list2` exist:
-     - If `list1.val < list2.val`:
-       - `current.next = list1`
-       - `list1 = list1.next`
-     - Else:
-       - `current.next = list2`
-       - `list2 = list2.next`
-     - `current = current.next`
-
-4. **Attach remaining nodes:**
-   - If `list1` still has nodes: `current.next = list1`
-   - If `list2` still has nodes: `current.next = list2`
-
-5. **Return:** `dummy.next`
+1. Create a dummy node as the starting point, use another pointer to build the list.
+   - node = ListNode()
+   - dummy = node
+2. While both lists have nodes, compare and attach the smaller one.
+   - if list1.val < list2.val:
+     - node.next = list1
+     - list1 = list1.next
+   - else:
+     - node.next = list2
+     - list2 = list2.next
+   - node = node.next
+3. Attach the remaining nodes from whichever list is not empty.
+   - node.next = list1 or list2
+4. return dummy.next
 
 ### I - Implement
 
