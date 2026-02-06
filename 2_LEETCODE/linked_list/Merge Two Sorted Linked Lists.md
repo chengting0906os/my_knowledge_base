@@ -58,6 +58,25 @@ Output: []
 1. Create a dummy node as the starting point, use another pointer to build the list.
    - node = ListNode()
    - dummy = node
+
+```
+dummy and node point to the SAME object:
+
+dummy ──┐
+        ▼
+      [?|None]  ← dummy node
+        ▲
+node ───┘
+
+After first node.next = list2:
+
+dummy
+  ▼
+[?|•] ──→ [1] -> ...
+           ▲
+          node  (moved forward, dummy stays)
+```
+
 2. While both lists have nodes, compare and attach the smaller one.
    - if list1.val < list2.val:
      - node.next = list1
@@ -68,7 +87,7 @@ Output: []
    - node = node.next
 3. Attach the remaining nodes from whichever list is not empty.
    - node.next = list1 or list2
-4. return dummy.next
+4. return dummy.next (dummy stays at start, dummy.next is the first merged node)
 
 ### I - Implement
 
