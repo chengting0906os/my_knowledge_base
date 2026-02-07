@@ -1,39 +1,41 @@
-# Invert Binary Tree
+# Maximum Depth of Binary Tree
 
 ## Problem Description
 
-You are given the root of a binary tree `root`. Invert the binary tree and return its root.
+Given the root of a binary tree, return its depth.
+
+The depth of a binary tree is defined as the number of nodes along the longest path from the root node down to the farthest leaf node.
 
 ## Examples
 
 ### Example 1
 
 ```text
-Input: root = [1,2,3,4,5,6,7]
-Output: [1,3,2,7,6,5,4]
+Input: root = [1,2,3,null,null,4]
+Output: 3
 ```
 
 ```
-     1              1
-    / \            / \
-   2   3   →     3   2
-  / \ / \       / \ / \
- 4  5 6  7     7  6 5  4
+     1
+    / \
+   2   3
+      /
+     4
+
+Depth = 3 (path: 1 → 3 → 4)
 ```
 
 ### Example 2
 
 ```text
-Input: root = [3,2,1]
-Output: [3,1,2]
-```
-
-### Example 3
-
-```text
 Input: root = []
-Output: []
+Output: 0
 ```
+
+### Constraints
+
+- `0 <= The number of nodes in the tree <= 100`
+- `-100 <= Node.val <= 100`
 
 ---
 
@@ -47,7 +49,7 @@ Output: []
 
 **Key Observations:**
 
-- Empty tree → return None
+- Empty tree → return 0
 
 ### M - Match
 
@@ -59,22 +61,36 @@ Output: []
 
 > - Sketch visualizations and write pseudocode.
 > - Walk through a high level implementation with an existing diagram.
->   **Approach: Depth First Search**
 
-1. Base Case: `if not root return None`
-2. root.left, root.right = root.right, root.left
-3. self.invertTree(root.left)
-4. self.invertTree(root.right)
-5. return root
+**Approach: Recursive DFS**
 
-**Approach: Iterative DFS**
+1. Base Case: if not root, return 0
+2. return `1 + max(self.maxDepth(root.left), self.maxDepth(root.right))`
 
-1. Base Case: `if not root return None`
-2. stack = deque([root])
-3. while stack: - node = stack.popleft()
-   - if node.left: stack.append(node.left)
-   - if node.right: stack.append(node.right)
-4. return root
+**Approach: Iterative DFS (Stack)**
+1. Base Case: if not root, return 0
+2. Init:
+   - stack = [(root, 1)]
+   - res = 0
+3. while stack:
+   - node, depth = stack.pop()
+   - res = max(res, depth)
+   - if node.left: stack.append((node.left, depth + 1))
+   - if node.right: stack.append((node.right, depth + 1))
+4. return res
+
+**Approach: Breadth First Search (Queue)**
+1. Base Case: if not root, return 0
+2. Init:
+   - queue = deque([root])
+   - depth = 0
+3. while queue:
+   - depth += 1
+   - for i in range(len(queue)): process all nodes at current level
+     - node = queue.popleft()
+     - if node.left: queue.append(node.left)
+     - if node.right: queue.append(node.right)
+4. return depth
 
 ### I - Implement
 
@@ -89,7 +105,7 @@ Output: []
 #         self.right = right
 
 class Solution:
-    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
         pass
 ```
 
