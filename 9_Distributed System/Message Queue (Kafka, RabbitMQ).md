@@ -1,1 +1,0 @@
-# Message Queue (Kafka, RabbitMQ)
