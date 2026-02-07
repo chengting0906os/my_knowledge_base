@@ -1,0 +1,1 @@
+# JOIN Types (INNER, LEFT, RIGHT, FULL)
