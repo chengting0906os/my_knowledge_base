@@ -111,6 +111,21 @@ Set-Cookie: session_id=abc123; HttpOnly; Secure
 
 ---
 
+## Quiz
+
+1. What is the full DNS cache lookup order before a query is made?
+2. What is the difference between an ISP DNS Resolver and an Authoritative DNS server?
+3. Explain the three-way handshake. What does each packet contain?
+4. What is ISN and why is it random?
+5. What happens during the TLS handshake? List the 5 steps.
+6. What is a Cipher Suite? What are its 4 components?
+7. Why does TLS use both asymmetric and symmetric encryption?
+8. What is the difference between Forward Secrecy and regular key exchange?
+9. Name at least 3 HTTP request headers and explain what they do.
+10. What are the 5 steps of browser rendering?
+
+---
+
 ## Reference
 
 - [What happens when you type an URL in the browser and press enter?](https://medium.com/@maneesha.wijesinghe1/what-happens-when-you-type-an-url-in-the-browser-and-press-enter-bb0aa2449c1a)
