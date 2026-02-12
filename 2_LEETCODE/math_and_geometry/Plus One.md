@@ -52,6 +52,22 @@ Output: [1,0,0,0]
 > - Sketch visualizations and write pseudocode.
 > - Walk through a high level implementation with an existing diagram.
 
+1.  Init:
+    carry = 1
+2.  Traverse the array from right to left:
+
+        - If digits[i] == 9 and carry == 1:
+        digits[i] = 0
+        carry = 1
+        - Else:
+        digits[i] += carry
+        carry = 0
+
+3.  After traversal, if carry == 1:
+    insert 1 at the beginning of digits
+
+4.  Return digits
+
 ### I - Implement
 
 > - Implement the solution (make sure to know what level of detail the interviewer wants).
