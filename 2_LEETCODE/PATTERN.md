@@ -41,3 +41,50 @@ def kth_largest(nums, k):
             heapq.heappushpop(heap, num)
     return heap[0]
 ```
+
+## Trie
+
+**Template - Add Word:**
+
+```python
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.word = False
+
+
+class WordDictionary:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def addWord(self, word: str) -> None:
+        cur = self.root
+        for c in word:
+            if c not in cur.children:
+                cur.children[c] = TrieNode()
+            cur = cur.children[c]
+        cur.word = True
+```
+
+## Char Indexing (ord)
+
+**When to use:**
+
+- Frequency arrays for lowercase/uppercase letters
+- Anagram / permutation checks
+- Sliding window on letters
+
+**Key Points:**
+
+- `idx = ord(c) - ord('a')` for `a`-`z`
+- `c = chr(idx + ord('a'))` to convert back
+- Use size `26` for lowercase, `52` if mixing cases, or `128/256` for ASCII
+
+**Common Operations:**
+
+```python
+idx = ord(c) - ord('a')
+count[idx] += 1
+
+letter = chr(idx + ord('a'))
+```
