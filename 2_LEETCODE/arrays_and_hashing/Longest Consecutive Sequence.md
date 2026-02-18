@@ -53,11 +53,33 @@ Output: 7
 > - Sketch visualizations and write pseudocode.
 > - Walk through a high level implementation with an existing diagram.
 
-1. (Fill in your high-level steps here)
-2. 
-3. 
-4. 
-5. 
+**Approach: Hash Set**
+
+1. Convert the nums list into set for O(1) loopups.
+2. Initilize `longest` to track the length of the longest consecutive sequence.
+3. For each num in num_set:
+   - Check if num - 1 not in num_set
+     - If True, num is the start of the sequence
+     - Initialize length = 1
+     - while n + length in nums: length += 1
+   - Update longest with the maximum length found
+4. return `longest`
+
+**Approach: Hash Map**
+
+1. Create a hashmap `mp` that store the longest sequence found
+2. Initialize `res = 0` to store the longest sequence found
+3. For each element:
+   - If n not in mp:
+     - `left = mp.get(n - 1, 0)`
+     - `right = mp.get(n + 1, 0)`
+     - length = left + 1 + right
+     - update `mp[n] = length`
+     - Update the boundaries:
+       - `mp[n - left] = length`
+       - `mp[n + right] = length`
+     - Update longest with the maximum length found
+4. return `longest`
 
 ### I - Implement
 
