@@ -41,22 +41,27 @@ The sum of 1 and 2 is 3. Since we are assuming a 1-indexed array, index1 = 1, in
 
 **Key Observations:**
 
+- Return the indices (1-indexed) of two numbers
+
 ### M - Match
 
 > - See if this problem matches a problem category (e.g. Strings/Arrays) and strategies or patterns within the category.
 
-**Pattern:**
+**Pattern:** two pointers
 
 ### P - Plan
 
 > - Sketch visualizations and write pseudocode.
 > - Walk through a high level implementation with an existing diagram.
 
-1. (Fill in your high-level steps here)
-2.
-3.
-4.
-5.
+1. Initialize two pointers:
+   - `l = 0`(start)
+   - `r = len(numbers) - 1`(end)
+2. while `l < r`:
+   - Computer `numbers[l] + numbers[r]`
+   - if > target: `r -= 1`
+   - if < target `l += 1`
+   - if == target: `return [l+1, r+1]`
 
 ### I - Implement
 
