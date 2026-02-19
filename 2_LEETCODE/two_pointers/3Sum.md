@@ -53,22 +53,40 @@ Explanation: The only possible triplet sums up to 0.
 
 **Key Observations:**
 
+- Need all unique triplets whose sum is `0`.
+- If we sort first, we can fix one number and use two pointers for the remaining two numbers.
+- Duplicates must be skipped for both the fixed index `i` and the moving pointers `j`, `k`.
+- Early stop: once `nums[i] > 0`, no later triplet can sum to `0`.
+
 ### M - Match
 
 > - See if this problem matches a problem category (e.g. Strings/Arrays) and strategies or patterns within the category.
 
-**Pattern:**
+**Pattern:** Array + Sorting + Two Pointers
 
 ### P - Plan
 
 > - Sketch visualizations and write pseudocode.
 > - Walk through a high level implementation with an existing diagram.
 
-1. (Fill in your high-level steps here)
-2.
-3.
-4.
-5.
+1. Initialize `res = []`, sort `nums`, and set `n = len(nums)`.
+2. Iterate `i` from `0` to `n - 3`:
+   - If `nums[i] > 0`, break.
+   - If `i > 0` and `nums[i] == nums[i - 1]`, continue (skip duplicate first number).
+3. Set two pointers:
+   - `j = i + 1`
+   - `k = n - 1`
+4. While `j < k`:
+   - `total = nums[i] + nums[j] + nums[k]`
+   - If `total < 0`, move left pointer: `j += 1`
+   - If `total > 0`, move right pointer: `k -= 1`
+   - Else (`total == 0`):
+     - Add answer: `res.append([nums[i], nums[j], nums[k]])`
+     - Move both pointers: `j += 1`, `k -= 1`
+     - Skip duplicates:
+       - `while j < k and nums[j] == nums[j - 1]: j += 1`
+       - `while j < k and nums[k] == nums[k + 1]: k -= 1`
+5. Return `res`.
 
 ### I - Implement
 
@@ -91,5 +109,9 @@ class Solution:
 > - Discuss any pros and cons of the solution.
 
 **Time Complexity:**
+`O(n^2)` (sorting is `O(n log n)`, then two-pointer scan per `i`)
 
 **Space Complexity:**
+
+- Python sorting implementation detail can use additional memory
+- Output storage: `O(m)` where `m` is the number of valid triplets
