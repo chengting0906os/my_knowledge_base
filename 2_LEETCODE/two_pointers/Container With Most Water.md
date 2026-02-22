@@ -50,11 +50,17 @@ Output: 4
 > - Sketch visualizations and write pseudocode.
 > - Walk through a high level implementation with an existing diagram.
 
-1. (Fill in your high-level steps here)
-2.
-3.
-4.
-5.
+1. Initialize two pointers:
+   - `l = 0`
+   - `r = len(heights) - 1`
+   - `res = 0`
+2. while `l < r`
+   - compute the current area: `area = min(heights[l], heights[r]) * (r - l)`
+   - update `res` with maximum area so far
+   - move the pointer at the shorter height
+     - If heights[l] <= heights[r], move l right
+     - Otherwise, move r left.
+3. `return res`
 
 ### I - Implement
 
