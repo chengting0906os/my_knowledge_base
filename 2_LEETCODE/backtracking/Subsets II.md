@@ -90,6 +90,21 @@ Output: [[],[7],[7,7]]
 4. return res
 
 **Approach: Iteration**
+1. Init:
+    - nums.sort()
+    - res = [[]]
+    - pre_idx = 0
+    - idx = 0
+2. For each index i
+    - if i > 0 and nums[i] == nums[i-1]
+        - pre_idx = idx  # only extend subsets added in previous round
+      else
+        - pre_idx = 0
+    - idx = len(res)  # snapshot before appending new subsets
+    - traverse j from pre_idx to idx - 1
+        - res.append(res[j] + [nums[i]])
+3. return res
+
 
 > - Implement the solution (make sure to know what level of detail the interviewer wants).
 
