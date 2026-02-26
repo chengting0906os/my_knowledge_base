@@ -29,12 +29,14 @@ If any of these differ, the request is cross-origin.
 Interviewers often ask: "Why add an extra request before the real one? Isn't it wasteful?"
 
 Security-first answer:
+
 - Same-Origin Policy mainly prevents JavaScript from reading cross-origin responses; it does not reliably stop every cross-origin request from reaching the server.
 - A malicious site may still trigger state-changing requests (for example, `DELETE`) to a target server.
 - If the server has no extra CORS gate, dangerous actions could be executed even though the attacker cannot read the response.
 - Preflight adds a permission check before non-simple, higher-risk requests. If preflight fails, the browser does not send the actual request.
 
 Performance answer:
+
 - Preflight is not for every request; it is mainly for non-simple requests.
 - Browsers can cache preflight results via `Access-Control-Max-Age`, reducing repeated preflight overhead.
 - This is a deliberate security/performance tradeoff: one lightweight check helps reduce high-impact cross-origin abuse.
@@ -92,12 +94,14 @@ CORS（Cross-Origin Resource Sharing，跨來源資源共享）是一種基於 H
 面試常見問題是：「正式請求前多一次 `OPTIONS`，不是浪費資源嗎？」
 
 可以先從安全性回答：
+
 - 同源政策主要是限制前端 JavaScript 讀取跨來源回應，不是完整阻止所有跨來源請求到達伺服器。
 - 惡意網站仍可能嘗試觸發具副作用的請求（例如 `DELETE`）。
 - 如果沒有額外檢查，伺服器可能在使用者不知情下執行刪除或修改等操作。
 - 預檢請求就是在正式請求前先做一次「是否允許」的過濾；預檢不通過，瀏覽器就不會送出真正請求。
 
 再補充效能面：
+
 - 預檢不是每個請求都會發生，主要針對非簡單請求。
 - 可透過 `Access-Control-Max-Age` 快取預檢結果，降低重複 `OPTIONS` 的成本。
 - 這是安全與效能的權衡：多一次輕量檢查，換取對高風險跨來源操作的保護。
@@ -124,3 +128,4 @@ CORS 是瀏覽器的跨來源讀取控制機制。因為同源政策，前端預
 
 - https://www.explainthis.io/zh-hant/swe/what-is-cors
 - https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS
+- https://realnewbie.com/posts/understanding-same-origin-policy-from-scratch-first-line-of-browser-security
