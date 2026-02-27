@@ -24,25 +24,25 @@ CSRF（跨站請求偽造）是指攻擊者誘導使用者瀏覽器，從惡意�
 
 ## Defenses（MDN 重點）
 
-### 1) CSRF Token（主要防線）
+### 1 CSRF Token（主要防線）
 
 - 伺服器在頁面放入不可預測 token
 - 前端送出狀態變更請求時一併帶回 token
 - 後端驗證 token 正確才執行
 
-### 2) Fetch Metadata 檢查
+### 2 Fetch Metadata 檢查
 
 - 後端檢查 `Sec-Fetch-Site` 等 header
 - 通常只允許 `same-origin` / `same-site` 的敏感請求
 - `cross-site` 請求可直接拒絕
 
-### 3) 避免 Simple Request（特別是 fetch/XHR）
+### 3 避免 Simple Request（特別是 fetch/XHR）
 
 - 對狀態變更請求使用非 simple request（例如 `Content-Type: application/json` 或自訂 header）
 - 讓跨站請求先卡在瀏覽器的預設限制（需通過 CORS 才能放行）
 - 注意：若 CORS 設定過度寬鬆（尤其 `Access-Control-Allow-Credentials` + 放行攻擊來源），仍可能有風險
 
-### 4) SameSite Cookie（Defense in Depth）
+### 4 SameSite Cookie（Defense in Depth）
 
 - `SameSite=Strict` 防護最強，但可能影響使用者流程
 - `SameSite=Lax` 較常見，但防護較弱
@@ -58,7 +58,8 @@ CSRF（跨站請求偽造）是指攻擊者誘導使用者瀏覽器，從惡意�
 
 ## Interview Version (30s)
 
-CSRF 是攻擊者利用使用者已登入狀態，誘導瀏覽器對目標站送出「帶 cookie 的偽造請求」，讓伺服器誤以為是本人操作。常見防禦是 CSRF token；若是前後端 API，也可透過非 simple request + 嚴謹 CORS 降低風險。`SameSite` cookie 可以加強防護，但不該當唯一防線。
+CSRF 主要利用「瀏覽器會自動帶上 Cookie」去偽造請求。攻擊者會誘導已登入使用者對目標站送出跨站請求，讓伺服器誤以為是本人操作。  
+防禦重點是：狀態變更請求要驗證 CSRF Token、Cookie 設 `SameSite`、後端檢查 `Origin/Referer`，並避免用 `GET` 做資料修改。
 
 ## Reference
 
