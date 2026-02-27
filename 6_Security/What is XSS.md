@@ -36,22 +36,41 @@ XSS（跨站腳本攻擊）是攻擊者把惡意 JavaScript 注入到網頁中�
 
 - 依輸出位置做正確編碼（HTML / Attribute / URL / JS context）
 - 不把使用者輸入直接拼進 HTML 或 script
+- 「顯示時正確 escape」意思是：把輸入當純文字輸出，而不是讓瀏覽器把它當 HTML/JS 執行。
+  - 例如輸入 `<script>alert(1)</script>`，顯示時應轉成 `&lt;script&gt;alert(1)&lt;/script&gt;`
 
 ### 2 Input Validation + Sanitization
 
 - 驗證輸入格式（白名單）
-- 需要保留部分 HTML 時，使用可信 sanitizer
+- Sanitization（清洗）= 保留允許的 HTML，移除危險內容。
+- 例如可保留 `<b>`、`<i>`，但移除 `<script>`、`onerror=`、`javascript:` URL。
+- 和 escape 的差別：escape 會把內容全部當純文字；sanitization 是「允許部分 HTML，但刪掉危險部分」。
+- 需要保留部分 HTML（例如富文字編輯器）時，使用可信 sanitizer。
 
 ### 3 Safe DOM APIs
 
-- 優先用 `textContent` / `innerText`
-- 避免把不可信內容放進 `innerHTML`, `document.write`, `eval`
+- 優先用 `textContent` / `innerText`：把內容當純文字寫入，不會把標籤或事件當成可執行程式。
+- `innerHTML` 風險：會解析 HTML；若內容含 `<script>`、`onerror=`、`javascript:` 等，可能被執行。
+- `document.write` 風險：會把字串當 HTML 插入文件，容易把不可信內容直接變成可執行內容。
+- `eval` 風險：會直接執行字串中的 JavaScript，等於把輸入當程式碼跑。
+- 簡單規則：不可信資料一律先當文字處理，不要直接當 HTML/JS 解譯。
+
+```js
+// Unsafe
+element.innerHTML = userInput;
+
+// Safe
+element.textContent = userInput;
+```
+
+- 若業務真的需要顯示富文字，先做 allowlist sanitization，再渲染。
 
 ### 4 CSP（Defense in Depth）
 
 - 用 CSP 限制可執行腳本來源
 - 避免 `unsafe-inline`，優先 `nonce` / `hash`
- Cookie Hardening
+
+### 5 Cookie Hardening
 
 - Session cookie 設 `HttpOnly` + `Secure` + 合理 `SameSite`
 - 可降低 XSS 成功後造成的連帶損害
