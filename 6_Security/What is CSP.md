@@ -14,16 +14,19 @@ CSP（Content-Security-Policy，內容安全策略）是一種瀏覽器安全機
 
 ## Common Setup Methods
 
-### 1) HTTP Header（建議）
+### 1 HTTP Header（建議）
 
 ```http
 Content-Security-Policy: default-src 'self'; script-src 'self' https://apis.example.com
 ```
 
-### 2) HTML meta（備用）
+### 2 HTML meta（備用）
 
 ```html
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://apis.example.com">
+<meta
+  http-equiv="Content-Security-Policy"
+  content="default-src 'self'; script-src 'self' https://apis.example.com"
+/>
 ```
 
 通常優先用 HTTP Header；`meta` 比較適合無法改後端 header 的情境。
