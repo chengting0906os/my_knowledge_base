@@ -54,6 +54,19 @@ Output: 5
 > - Sketch visualizations and write pseudocode.
 > - Walk through a high level implementation with an existing diagram.
 
+1. Create a hashmap to store character frequencies in the current sliding window, and track the maximum frequency.
+2. Initalize `max_l = 0`,`l = 0`,`res=0`
+3. Move the right pointer `r` across the string:
+   - Update the frequency of s[r]
+   - update `max_l` with the highest frequency seen so far
+   - if `r - l + 1 - max_l > k`:
+     - Shrink the window from the left and adjust counts.
+       - `mp[s[l]] -= 1`
+     - Move the left pointer forward
+       - `l += 1`
+   - Update res with the valid window size
+4. `return res`
+
 ### I - Implement
 
 > - Implement the solution (make sure to know what level of detail the interviewer wants).
