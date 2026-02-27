@@ -2,11 +2,11 @@
 
 ## Problem Description
 
-You are given a string `s` consisting of only uppercase English characters and an integer `k`.
+You are given a string `s` consisting of only uppercase english characters and an integer `k`.
 
-You can choose up to `k` characters in `s` and replace each of them with any uppercase English character.
+You can choose up to `k` characters of the string and replace them with any other uppercase English character.
 
-Return the length of the longest substring that can be turned into a string with only one distinct character after at most `k` replacements.
+After performing at most `k` replacements, return the length of the longest substring which contains only one distinct character.
 
 ## Examples
 
@@ -15,7 +15,7 @@ Return the length of the longest substring that can be turned into a string with
 ```text
 Input: s = "XYYX", k = 2
 Output: 4
-Explanation: Either replace the two 'X' with 'Y', or the two 'Y' with 'X'.
+Explanation: Either replace the 'X's with 'Y's, or replace the 'Y's with 'X's.
 ```
 
 ### Example 2
@@ -29,7 +29,7 @@ Output: 5
 
 - `1 <= s.length <= 1000`
 - `0 <= k <= s.length`
-- `s` consists of uppercase English letters only
+- `s` consists of uppercase english letters only
 
 ---
 
@@ -47,7 +47,7 @@ Output: 5
 
 > - See if this problem matches a problem category (e.g. Strings/Arrays) and strategies or patterns within the category.
 
-**Pattern:**
+**Pattern:** Sliding Window
 
 ### P - Plan
 
