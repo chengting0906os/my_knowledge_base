@@ -24,13 +24,13 @@
 
 ### Quick Comparison
 
-| Item | Cookie | Session |
-| --- | --- | --- |
-| Where data lives | Browser | Server (state), browser stores session ID |
-| Sent by browser automatically | Yes | Session ID cookie: Yes |
-| Stateless-friendly | Limited | No |
-| Revocation | Delete cookie only | Easy (kill session on server) |
-| Typical use | State persistence | Traditional web login |
+| Item                          | Cookie             | Session                                   |
+| ----------------------------- | ------------------ | ----------------------------------------- |
+| Where data lives              | Browser            | Server (state), browser stores session ID |
+| Sent by browser automatically | Yes                | Session ID cookie: Yes                    |
+| Stateless-friendly            | Limited            | No                                        |
+| Revocation                    | Delete cookie only | Easy (kill session on server)             |
+| Typical use                   | State persistence  | Traditional web login                     |
 
 ### One-line Interview Summary
 
@@ -63,13 +63,13 @@
 
 ### 快速比較
 
-| 項目 | Cookie | Session |
-| --- | --- | --- |
-| 資料主要存放位置 | 瀏覽器 | 伺服器（瀏覽器只存 Session ID） |
-| 瀏覽器是否自動帶上 | 會 | Session ID Cookie 會 |
-| 是否適合無狀態 | 普通 | 否 |
-| 失效/撤銷難度 | 刪 Cookie 即可 | 容易（伺服器刪 Session） |
-| 常見場景 | 狀態保存 | 傳統網站登入 |
+| 項目               | Cookie         | Session                         |
+| ------------------ | -------------- | ------------------------------- |
+| 資料主要存放位置   | 瀏覽器         | 伺服器（瀏覽器只存 Session ID） |
+| 瀏覽器是否自動帶上 | 會             | Session ID Cookie 會            |
+| 是否適合無狀態     | 普通           | 否                              |
+| 失效/撤銷難度      | 刪 Cookie 即可 | 容易（伺服器刪 Session）        |
+| 常見場景           | 狀態保存       | 傳統網站登入                    |
 
 ### 面試一句話版本
 
