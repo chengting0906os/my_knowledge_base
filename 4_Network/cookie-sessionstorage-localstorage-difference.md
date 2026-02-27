@@ -86,6 +86,12 @@ sessionStorage.getItem("memberName");
 - `Secure`：僅在 HTTPS 傳送。
 - `HttpOnly`：前端 JavaScript 無法透過 `document.cookie` 讀取，可降低 XSS 風險面。
 
+## What's the difference among cookie, session storage, local storage
+
+- `Cookie` 可由後端透過 HTTP 回應標頭 `Set-Cookie` 設定；`localStorage`、`sessionStorage` 主要由前端 JavaScript 操作。補充：前端也能用 `document.cookie` 設定部分 Cookie，但 `HttpOnly` Cookie 例外。
+- `Cookie` 約可儲存 4 KB；`localStorage`、`sessionStorage` 依瀏覽器而異，通常約可儲存 5-10 MB
+- `localStorage` 會長期存在（除非手動清除）；`sessionStorage` 在該分頁關閉後即消失。
+
 ## Ref
 
 - https://www.explainthis.io/zh-hant/swe/cookie-sessionstorage-localstorage-difference
