@@ -31,6 +31,43 @@ Content-Security-Policy: default-src 'self'; script-src 'self' https://apis.exam
 
 通常優先用 HTTP Header；`meta` 比較適合無法改後端 header 的情境。
 
+## Django Basic Config
+
+在 Django 專案啟用 CSP，可先做這兩步：
+
+### 1. 加入 Middleware
+
+```python
+MIDDLEWARE = [
+    # ...
+    "django.middleware.csp.ContentSecurityPolicyMiddleware",
+    # ...
+]
+```
+
+### 2. 在 `settings.py` 設定政策
+
+可用 `SECURE_CSP`（正式阻擋）與 `SECURE_CSP_REPORT_ONLY`（只回報不阻擋）：
+
+```python
+from django.utils.csp import CSP
+
+# Enforced mode
+SECURE_CSP = {
+    "default-src": [CSP.SELF],
+    # Add more enforced directives
+}
+
+# Report-only mode
+SECURE_CSP_REPORT_ONLY = {
+    "default-src": [CSP.SELF],
+    # Add more directives as needed
+    "report-uri": "/path/to/reports-endpoint/",
+}
+```
+
+建議上線順序：先開 `SECURE_CSP_REPORT_ONLY` 觀察，再切到 `SECURE_CSP`。
+
 ## Common Directives
 
 - `default-src`: 預設資源來源規則
