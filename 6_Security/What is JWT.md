@@ -14,7 +14,7 @@
 
 格式長這樣：`header.payload.signature`
 
-## 你的範例 JWT 拆解
+## 範例 JWT
 
 ```text
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
@@ -27,13 +27,13 @@ KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30
 - Header（Base64URL 解碼後）：
 
 ```json
-{"alg":"HS256","typ":"JWT"}
+{ "alg": "HS256", "typ": "JWT" }
 ```
 
 - Payload（Base64URL 解碼後）：
 
 ```json
-{"sub":"1234567890","name":"John Doe","admin":true,"iat":1516239022}
+{ "sub": "1234567890", "name": "John Doe", "admin": true, "iat": 1516239022 }
 ```
 
 - Signature：
@@ -41,7 +41,7 @@ KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30
   - 伺服器會用同一套演算法與密鑰重新計算，比對是否一致。
   - 這顆 token 的 `alg=HS256`，代表驗簽會用 HMAC-SHA256。
 
-## 編碼 vs 雜湊/簽章（你要記這段）
+## 編碼 vs 雜湊/簽章
 
 - `Header`、`Payload`：**Base64URL 編碼**（可被解碼閱讀，不是加密）。
 - `Signature`：**簽章結果**，用來驗證內容是否被改。
@@ -59,21 +59,21 @@ KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30
 
 1. 使用者用帳密/OAuth 登入，伺服器先完成身份驗證。
 2. 伺服器建立 payload（例如 `role`、`exp`）。
-3. 伺服器組出 `base64url(header) + "." + base64url(payload)`。
-4. 用演算法與密鑰計算簽章（HS256 用同一把祕鑰；RS256 用私鑰簽）。
-5. 回傳完整 token：`header.payload.signature`。
+3. 伺服器先組出簽章輸入字串（signing input）：`base64url(header) + "." + base64url(payload)`。
+4. 對 signing input 做「hash + 簽章」：
+   - `HS256`：`HMAC-SHA256(secret, signing_input)` 產生 signature（含 hash 成分，但不是資料加密）。
+   - `RS256`：先做 `SHA-256` hash，再用 RSA 私鑰做數位簽章（也是簽章，不是把 payload 加密）。
+5. 把 signature 做 Base64URL 編碼後，組成完整 token：`header.payload.signature`。
 
 ## 驗證流程（Verifier/Resource Server 端）
 
 1. 從 `HttpOnly` cookie 取出 JWT（Web 常見做法；由瀏覽器自動夾帶）。
 2. 解析 header，確認允許的演算法（避免接受錯誤/降級演算法）。
-3. 用對應密鑰驗簽（HS256 用 shared secret；RS256 用公鑰驗）。
-4. 檢查 claims：
-   - `exp` 是否過期
-   - `nbf` 是否已生效（若有）
-   - `iss` 是否為信任簽發者（若有）
-   - `aud` 是否是本服務（若有）
-5. 全部通過才建立使用者身份（principal）並授權；失敗回 `401/403`。
+3. 用對應密鑰重算簽章，並和 token 內的 `signature` 比對（HS256 用 shared secret；RS256 用公鑰驗）。
+4. 解出 payload 檢查 claims：
+   - 讀取 `exp` 數值，和目前時間比對，確認未過期
+
+5. 全部通過才建立使用者身份（principal）並授權。
 
 ## 優點 / 限制
 
@@ -94,3 +94,7 @@ KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30
 ## 一句話
 
 JWT 是「可驗簽的身份聲明容器」：方便分散式驗證，但安全重點在金鑰管理、過期策略與儲存方式。
+
+## Ref
+
+- https://kucw.io/blog/jwt-signature/
