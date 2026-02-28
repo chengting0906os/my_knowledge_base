@@ -12,6 +12,13 @@ Cookie 是瀏覽器儲存在本機的一小段資料，由伺服器透過 `Set-C
 1. Server 回應：`Set-Cookie: session_id=abc123; HttpOnly; Secure; SameSite=Lax`
 2. Browser 儲存這個 cookie
 3. 下次請求同站資源時，自動夾帶：`Cookie: session_id=abc123`
+4. 同一個 response 可帶多個 `Set-Cookie`，一次設定多顆 cookie
+
+## Creation / Removal / Update（MDN 重點）
+
+- 建立：Server 用 `Set-Cookie: name=value` 設定 cookie。
+- 更新：用相同 cookie 名稱重新 `Set-Cookie` 即可覆蓋值。
+- 刪除：用相同 `name + path + domain` 重設，並設 `Max-Age=0`（或 `Expires` 設過去時間）。
 
 ## Common Use Cases
 
@@ -23,6 +30,8 @@ Cookie 是瀏覽器儲存在本機的一小段資料，由伺服器透過 `Set-C
 ## Important Cookie Attributes
 
 - `Expires` / `Max-Age`: 設定有效時間
+  - 沒設 `Expires/Max-Age` -> session cookie
+  - 同時設兩者時，`Max-Age` 優先
 - `Domain`: 哪些網域可帶上 cookie
 - `Path`: 哪些路徑可帶上 cookie
 - `HttpOnly`: 禁止 JavaScript 讀取（降低 XSS 竊取風險）
@@ -36,7 +45,9 @@ Cookie 是瀏覽器儲存在本機的一小段資料，由伺服器透過 `Set-C
 
 ## Cookie Types (Practical)
 
-- Session Cookie：關閉瀏覽器後失效（未設 `Expires/Max-Age`）
+- Session Cookie：未設 `Expires/Max-Age`，理論上在 client shutdown 後移除。
+  - 「session 何時結束」由瀏覽器定義。
+  - 但多數瀏覽器有 session restore，重開瀏覽器時可能把 session cookie 一起恢復。
 - Persistent Cookie：有明確過期時間
 - First-party Cookie：由當前網站設定
 - Third-party Cookie：由第三方網域設定（現代瀏覽器限制越來越多）
@@ -59,3 +70,8 @@ Cookie 是瀏覽器儲存在本機的一小段資料，由伺服器透過 `Set-C
 ## Interview Version (30s)
 
 Cookie 是伺服器存到瀏覽器的小型狀態資料，透過 `Set-Cookie` 設定，之後瀏覽器會在符合條件的請求自動帶回。最常見用途是登入 session。安全上要重點設定 `HttpOnly`、`Secure`、`SameSite`，分別對應降低 XSS 竊取、避免明文傳輸、減少 CSRF 風險。
+
+## Ref
+
+- https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies
+- https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
