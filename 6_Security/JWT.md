@@ -1,1 +1,0 @@
-# JWT (JSON Web Token)
