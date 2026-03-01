@@ -97,7 +97,7 @@ class Solution:
 > - Discuss any pros and cons of the solution.
 
 **Time Complexity:**
-O(ElogV)
+O(ElogV) # each edge can trigger a heap push
 
 **Space Complexity:**
 O(V+E)
