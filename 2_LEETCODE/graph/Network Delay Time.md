@@ -56,6 +56,26 @@ Output: -1
 > - Sketch visualizations and write pseudocode.
 > - Walk through a high level implementation with an existing diagram.
 
+1. Initialize graph and state
+   - Build adjacency list `adj` from `times`
+   - For each `(u, v, w)` in `times`: `adj[u].append((v, w))`
+   - `min_heap = [(0, k)]` # `(time, node)`
+   - `visited = set()` E Maintain a visited set to avoid reprocessing nodes.
+   - `max_time = 0`
+
+2. While `min_heap` is not empty:
+   - `t, node = heappop(min_heap)`
+   - If `node` is already in `visited`, continue
+   - Add `node` to `visited`
+   - `max_time = t` # shortest finalized time for current node
+   - For each `(nei, w)` in `adj[node]`:
+   - If `nei` not in `visited`:
+   - `heappush(min_heap, (t + w, nei))`
+
+3. Return result
+   - If `len(visited) == n`, return `max_time`
+   - Else return `-1`
+
 ### I - Implement
 
 > - Implement the solution (make sure to know what level of detail the interviewer wants).
@@ -77,5 +97,7 @@ class Solution:
 > - Discuss any pros and cons of the solution.
 
 **Time Complexity:**
+O(ElogV)
 
 **Space Complexity:**
+O(V+E)
