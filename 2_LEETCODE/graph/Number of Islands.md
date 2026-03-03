@@ -104,4 +104,4 @@ class Solution:
 O(r\*c)
 
 **Space Complexity:**
-O(1)
+O(r\*c)
