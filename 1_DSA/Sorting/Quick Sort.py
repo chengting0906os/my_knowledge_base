@@ -1,29 +1,27 @@
+import random
 from typing import List
 
 
-def quick_sort(arr: List[int], s: int = 0, e: int = None) -> None:
-    if e is None:
-        e = len(arr) - 1
-    if e - s + 1 <= 1:
-        return
+def quick_sort(arr: List[int]) -> List[int]:
+    if len(arr) <= 1:
+        return arr
 
-    pivot = arr[e]
-    left = s
+    left, mid, right = [], [], []
+    pivot = random.choice(arr)
 
-    for i in range(s, e):
-        if arr[i] < pivot:
-            arr[left], arr[i] = arr[i], arr[left]
-            left += 1
+    for val in arr:
+        if val < pivot:
+            left.append(val)
+        elif val == pivot:
+            mid.append(val)
+        else:
+            right.append(val)
 
-    arr[e] = arr[left]
-    arr[left] = pivot
-
-    quick_sort(arr, s, left - 1)
-    quick_sort(arr, left + 1, e)
+    return quick_sort(left) + mid + quick_sort(right)
 
 
 if __name__ == "__main__":
     data = [10, 7, 8, 9, 1, 5]
     print("before:", data)
-    quick_sort(data)
+    data = quick_sort(data)
     print("after: ", data)
