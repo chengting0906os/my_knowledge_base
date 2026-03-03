@@ -101,5 +101,7 @@ class Solution:
 > - Discuss any pros and cons of the solution.
 
 **Time Complexity:**
+O(r\*c)
 
 **Space Complexity:**
+O(1)
