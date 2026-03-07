@@ -58,6 +58,12 @@
 
 7.  What are common HTTP methods, and how do PUT, POST, and PATCH differ?  
     常見 HTTP Method 有哪些？PUT、POST、PATCH 差在哪？
+    <details>
+    <summary>Answer</summary>
+    - POST 建立資源，可能有副作用
+    - PUT 完整替換資源，有冪等性
+    - PATCH 部分更新資源，不保證冪等性
+    </details>
 
 8.  What does idempotent mean in HTTP?  
     HTTP 裡的冪等性（idempotent）是什麼意思？
