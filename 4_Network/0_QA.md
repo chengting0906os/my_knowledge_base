@@ -67,6 +67,10 @@
 
 8.  What does idempotent mean in HTTP?  
     HTTP 裡的冪等性（idempotent）是什麼意思？
+    <details>
+    <summary>Answer</summary>
+    每次操作結果相同，不管呼叫幾次，server 的最終狀態都一樣
+    </details>
 
 9.  What are the differences between status code classes 1xx, 2xx, 3xx, 4xx, and 5xx?  
     1xx、2xx、3xx、4xx、5xx 狀態碼各代表什麼？
