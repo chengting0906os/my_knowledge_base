@@ -1,31 +1,69 @@
 # Network Interview Q&A List
 
-1. What is HTTP, and what does it define in a request and response?  
-   什麼是 HTTP？它在 request / response 中定義了哪些內容？
+1.  What is HTTP, and what does it define in a request and response?  
+    什麼是 HTTP？它在 request / response 中定義了哪些內容？
+     <details>
+     <summary>Answer</summary>
+     - HTTP 是應用層協議，定義 client 與 server 的通訊格式
+     - 特性：無狀態（stateless），每個 request 獨立
+     - Request：method、URL、headers、body
+     - Response：status code、headers、body
+     </details>
 
-2. What are the key differences between HTTP and HTTPS?  
-   HTTP 和 HTTPS 的核心差異是什麼？
+2.  What are the key differences between HTTP and HTTPS?  
+    HTTP 和 HTTPS 的核心差異是什麼？
+    <details>
+    <summary>Answer</summary>
+    HTTPS = HTTP + TLS，加入加密、資料完整性驗證、身份驗證
+    - 瀏覽器會檢查憑證是否由受信任的 CA（Certificate Authority）簽發
+    - HTTP 明文傳輸，沒有加密，容易被竊聽或篡改
+    </details>
 
-3. What does TLS add on top of HTTP?  
-   TLS 在 HTTP 之上多提供了哪些能力？
+3.  What does TLS add on top of HTTP?  
+    TLS 在 HTTP 之上多提供了哪些能力？
+    <details>
+    <summary>Answer</summary>
+    - 加密：用非對稱加密交換 session key，之後改對稱加密傳輸
+    - 完整性驗證：用 MAC（Message Authentication Code）確保資料沒被篡改
+    - 身份驗證：server 出示 TLS 憑證，由 CA（Certificate Authority）簽發，防止中間人冒充
+    </details>
 
-4. What is the difference between HTTP/1.1, HTTP/2, and HTTP/3?  
-   HTTP/1.1、HTTP/2、HTTP/3 的差異是什麼？
+4.  What is the difference between HTTP/1.0, HTTP/1.1, HTTP/2, and HTTP/3?
+    HTTP/1.0, HTTP/1.1、HTTP/2、HTTP/3 的差異是什麼？
+    <details>
+    <summary>Answer</summary>
+    - HTTP/1.0：每個 request 都要重新建立 TCP 連線，效率差
+    - HTTP/1.1：預設持久連線（keep-alive），多個 request 共用同一條 TCP 連線，但同一連線同時只能處理一個 request，有 HOL blocking（Head-of-Line blocking，隊頭阻塞）；瀏覽器用開 6 條 TCP 連線來繞過限制
+    - HTTP/2：二進制傳輸、多路復用（Multiplexing，同一連線併發多個 stream），解決 HTTP 層 HOL，但底層 TCP 丟包仍會卡住所有 stream
+    - HTTP/3：改用 QUIC（Quick UDP Internet Connections，基於 UDP），每個 stream 獨立，單一丟包不影響其他 stream，消除 TCP 層 HOL blocking
+    </details>
 
-5. Why can HTTP/3 reduce TCP-level head-of-line blocking effects?  
-   為什麼 HTTP/3 可以降低 TCP 層 HOL 影響？
+5.  Why can HTTP/3 reduce TCP-level head-of-line blocking effects?  
+    為什麼 HTTP/3 可以降低 TCP 層 HOL 影響？
+    <details>
+     <summary>Answer</summary>
+     - TCP 是 byte stream，丟一個封包整條連線都要等重傳，所有 stream 一起卡
+     - QUIC 的每個 stream 各自有序號且獨立傳輸
+     </details>
 
-6. What is 0-RTT in HTTP/3/QUIC, and what is the replay-risk caveat?  
-   HTTP/3/QUIC 的 0-RTT 是什麼？有哪些 replay 風險？
+6.  What is 0-RTT in HTTP/3/QUIC, and what is the replay-risk caveat?
+    HTTP/3/QUIC 的 0-RTT 是什麼？有哪些 replay 風險？
+    <details>
+    <summary>Answer</summary>
+    - 正常 TLS 建連需 1 RTT 握手才能送資料；若 client 曾連過此 server，可用上次的 session ticket，連線時直接帶資料送出，RTT = 0
+    - Replay 風險：0-RTT 資料在握手前送出，server 無法辨別是新 request 還是攻擊者重放的
+    - 因此 0-RTT 只適合冪等操作（如 GET），POST/PUT 等有副作用的操作不應使用
+    - RFC 8470 標準解法：proxy 轉發時加 `Early-Data: 1` header；server 判斷不安全則回 `425 Too Early`，要求 client 等握手完成後重試
+    </details>
 
-7. What are common HTTP methods, and how do PUT, POST, and PATCH differ?  
-   常見 HTTP Method 有哪些？PUT、POST、PATCH 差在哪？
+7.  What are common HTTP methods, and how do PUT, POST, and PATCH differ?  
+    常見 HTTP Method 有哪些？PUT、POST、PATCH 差在哪？
 
-8. What does idempotent mean in HTTP?  
-   HTTP 裡的冪等性（idempotent）是什麼意思？
+8.  What does idempotent mean in HTTP?  
+    HTTP 裡的冪等性（idempotent）是什麼意思？
 
-9. What are the differences between status code classes 1xx, 2xx, 3xx, 4xx, and 5xx?  
-   1xx、2xx、3xx、4xx、5xx 狀態碼各代表什麼？
+9.  What are the differences between status code classes 1xx, 2xx, 3xx, 4xx, and 5xx?  
+    1xx、2xx、3xx、4xx、5xx 狀態碼各代表什麼？
 
 10. In practice, when would you return 200 vs 201 vs 204?  
     實務上什麼時候回 200、201、204？
