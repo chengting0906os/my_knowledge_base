@@ -359,14 +359,66 @@
     每一層只看自己的 header，不管上下層的內容，這讓各層可以獨立替換（如把 TCP 換成 UDP）。
     </details>
 
-27. What is URI vs URL?  
+27. What is URI vs URL?
     URI 和 URL 的差異是什麼？
+    <details>
+    <summary>Answer</summary>
+    - **URI（Uniform Resource Identifier）**：資源的「識別符」，只要能唯一識別一個資源就算
+    - **URL（Uniform Resource Locator）**：資源的「位置」，包含如何取得它的方式（protocol + 位置）
 
-28. What is the difference between Cookie and Session?  
+    URL 是 URI 的子集：所有 URL 都是 URI，但 URI 不一定是 URL。
+
+    ```
+    URI: urn:isbn:978-3-16-148410-0   ← 識別一本書，但不知道去哪找
+    URL: https://example.com/book     ← 識別 + 告訴你去哪取得
+    ```
+
+    實務上兩者幾乎混用，說 URL 通常就是指 `https://...` 這種完整的網址。
+    </details>
+
+28. What is the difference between Cookie and Session?
     Cookie 和 Session 差異是什麼？
+    <details>
+    <summary>Answer</summary>
 
-29. What is the difference between cookie, sessionStorage, and localStorage?  
+    HTTP 是無狀態（stateless）協議，Cookie 和 Session 都是用來維持狀態的機制。
+
+    |          | Cookie                             | Session                            |
+    | -------- | ---------------------------------- | ---------------------------------- |
+    | 儲存位置 | **Client 端**（瀏覽器）            | **Server 端**                      |
+    | 內容     | 直接存資料（如 user_id、偏好設定） | 只存 Session ID，實際資料在 server |
+    | 安全性   | 較低，資料在 client 可被竄改       | 較高，敏感資料不離開 server        |
+    | 容量     | 約 4KB                             | 理論上無限（受 server 記憶體限制） |
+    | 過期     | 可設定過期時間，關閉瀏覽器可保留   | 通常關閉瀏覽器或 timeout 就失效    |
+
+    **常見搭配用法：**
+    1. Server 建立 Session，產生 Session ID
+    2. 把 Session ID 存在 Cookie 送給 client
+    3. 之後每次請求，瀏覽器自動帶上 Cookie（含 Session ID）
+    4. Server 用 Session ID 查出對應的 Session 資料
+    </details>
+
+29. What is the difference between cookie, sessionStorage, and localStorage?
     Cookie、sessionStorage、localStorage 差異是什麼？
+    <details>
+    <summary>Answer</summary>
+
+    三者都是瀏覽器端的儲存機制：
+
+    |                  | Cookie                       | sessionStorage   | localStorage           |
+    | ---------------- | ---------------------------- | ---------------- | ---------------------- |
+    | 儲存位置         | 瀏覽器                       | 瀏覽器           | 瀏覽器                 |
+    | 容量             | ~4KB                         | ~5MB             | ~5MB                   |
+    | 過期             | 可自訂，或關閉瀏覽器消失     | 關閉分頁即消失   | 永久（手動清除才消失） |
+    | 隨 HTTP 請求發送 | **會自動帶在 header**        | 不會             | 不會                   |
+    | 存取範圍         | 同域名所有分頁               | 同一分頁         | 同域名所有分頁         |
+    | 主要用途         | 身份驗證（Session ID）、追蹤 | 暫存單次操作資料 | 使用者偏好、長期快取   |
+
+    **關鍵差異：**
+    - Cookie 會自動附在每個 HTTP 請求上，適合讓 server 讀取（如驗證身份）
+    - sessionStorage / localStorage 只在 client 端，server 看不到，適合純前端狀態管理
+    - sessionStorage 比 localStorage 更嚴格，關分頁就清空
+    </details>
 
 30. CDN vs Reverse Proxy vs Load Balancer: how are they different and how do they work together?  
     CDN、Reverse Proxy、Load Balancer 各自做什麼？如何一起工作？
@@ -392,11 +444,40 @@
 37. In UDP, what is a datagram boundary, and what are practical risks when packet size is too large?  
     UDP 的 datagram 邊界是什麼？封包太大在實務上有什麼風險？
 
-38. In OSI, what is the difference between Session layer and Presentation layer?  
+38. In OSI, what is the difference between Session layer and Presentation layer?
     在 OSI 中，Session layer 和 Presentation layer 差在哪？
+    <details>
+    <summary>Answer</summary>
 
-39. What are the protocol data unit (PDU, Protocol Data Unit) names across layers (segment / packet / frame / bits)?  
+    | | Session Layer（第 5 層） | Presentation Layer（第 6 層） |
+    |---|---|---|
+    | 負責 | 建立、管理、終止**會話**（兩端的對話） | 資料的**格式轉換**、加密、壓縮 |
+    | 關注點 | 連線的生命週期（何時開始、結束、恢復） | 資料長什麼樣子（編碼、加解密） |
+    | 例子 | RPC、NetBIOS、建立 TLS session | TLS 加解密、JPEG 壓縮、字元編碼轉換 |
+
+    - Session：管「連線這件事」
+    - Presentation：管「資料的格式」
+
+    實務上這兩層在 TCP/IP 模型中都被合併進 Application 層，現代開發幾乎不單獨討論。
+    </details>
+
+39. What are the protocol data unit (PDU, Protocol Data Unit) names across layers (segment / packet / frame / bits)?
     各層 PDU（Protocol Data Unit，協定資料單元）名稱是什麼（segment / packet / frame / bits）？
+    <details>
+    <summary>Answer</summary>
+
+    每一層對資料的稱呼不同，反映該層加上的 header 結構：
+
+    | OSI 層 | PDU 名稱 | 說明 |
+    |---|---|---|
+    | 7-5 Application | **Data** | 原始應用程式資料 |
+    | 4 Transport | **Segment**（TCP）/ **Datagram**（UDP） | 加上 TCP/UDP header |
+    | 3 Network | **Packet** | 加上 IP header |
+    | 2 Data Link | **Frame** | 加上 MAC header + FCS |
+    | 1 Physical | **Bits** | 實際傳輸的 0/1 位元 |
+
+    封裝過程：`Data → Segment → Packet → Frame → Bits`
+    </details>
 
 40. How is HTTP version selected in real systems (server policy + client negotiation, e.g., ALPN)?  
     實務上 HTTP 版本如何決定（伺服器策略 + 客戶端協商，例如 ALPN）？
