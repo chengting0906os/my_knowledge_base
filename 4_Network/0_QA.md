@@ -285,14 +285,79 @@
     - UDP 用在「寧可掉包也要低延遲」的場景（如視訊通話掉幾幀比卡頓好）
     </details>
 
-24. What is the OSI model, and what does each layer do?  
+24. What is the OSI model, and what does each layer do?
     什麼是 OSI Model？七層各自負責什麼？
+    <details>
+    <summary>Answer</summary>
 
-25. How does the 4-layer TCP/IP model map to the 7-layer OSI model?  
+    OSI（Open Systems Interconnection）是網路通訊的七層參考模型，由上到下：
+
+    | 層  | 名稱                    | 負責                             | 代表協議        |
+    | --- | ----------------------- | -------------------------------- | --------------- |
+    | 7   | Application（應用層）   | 使用者直接互動的網路服務         | HTTP、DNS、SMTP |
+    | 6   | Presentation（表示層）  | 資料格式轉換、加密、壓縮         | TLS/SSL、JPEG   |
+    | 5   | Session（會話層）       | 建立、管理、終止會話             | RPC             |
+    | 4   | Transport（傳輸層）     | 端對端傳輸、可靠性、流量控制     | TCP、UDP        |
+    | 3   | Network（網路層）       | 路由、定址、跨網路傳輸           | IP、ICMP        |
+    | 2   | Data Link（資料連結層） | 同一網路內節點間傳輸、MAC 定址   | Ethernet、Wi-Fi |
+    | 1   | Physical（實體層）      | 實際的位元傳輸（電、光、無線電） | 網路線、光纖    |
+
+    記憶口訣（由下到上）：**Please Do Not Throw Sausage Pizza Away**
+    </details>
+
+25. How does the 4-layer TCP/IP model map to the 7-layer OSI model?
     四層 TCP/IP 模型如何對應到七層 OSI？
+    <details>
+    <summary>Answer</summary>
 
-26. What is encapsulation/de-encapsulation in networking?  
+    ```
+    OSI（7層）                    TCP/IP（4層）
+    ┌─────────────────┐
+    │ 7. Application  │
+    │ 6. Presentation │  →  Application（應用層）
+    │ 5. Session      │
+    ├─────────────────┤
+    │ 4. Transport    │  →  Transport（傳輸層）
+    ├─────────────────┤
+    │ 3. Network      │  →  Internet（網路層）
+    ├─────────────────┤
+    │ 2. Data Link    │
+    │ 1. Physical     │  →  Network Access（網路存取層）
+    └─────────────────┘
+    ```
+
+    - TCP/IP 把 OSI 上面三層合併為 Application
+    - TCP/IP 把 OSI 下面兩層合併為 Network Access
+    - 實務上用 TCP/IP 模型，OSI 是理論參考框架
+    </details>
+
+26. What is encapsulation/de-encapsulation in networking?
     什麼是封裝與解封裝（encapsulation / de-encapsulation）？
+    <details>
+    <summary>Answer</summary>
+
+    **封裝（Encapsulation）**：資料從上層往下層傳，每一層加上自己的 header（有時加 trailer）
+
+    ```
+    Application  →  Data
+    Transport    →  [TCP header | Data]           (Segment)
+    Network      →  [IP header  | Segment]        (Packet)
+    Data Link    →  [MAC header | Packet | FCS]   (Frame)
+    Physical     →  實際位元傳輸
+    ```
+
+    **解封裝（De-encapsulation）**：接收方從下層往上層，每一層剝掉自己的 header
+
+    ```
+    Physical  →  收到位元
+    Data Link →  剝掉 MAC header，取出 Packet
+    Network   →  剝掉 IP header，取出 Segment
+    Transport →  剝掉 TCP header，取出 Data
+    Application → 拿到原始資料
+    ```
+
+    每一層只看自己的 header，不管上下層的內容，這讓各層可以獨立替換（如把 TCP 換成 UDP）。
+    </details>
 
 27. What is URI vs URL?  
     URI 和 URL 的差異是什麼？
