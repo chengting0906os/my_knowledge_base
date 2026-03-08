@@ -106,21 +106,115 @@
 
 14. What is DNS, and why is it required before connecting to a website?  
     什麼是 DNS？為什麼連網站前一定要先做 DNS 解析？
+    <details>
+    <summary>Answer</summary>
+    根據網址做 DNS 解析出 IP
+    </details>
 
-15. Walk through DNS resolution from cache to Root -> TLD -> Authoritative.  
+15. Walk through DNS resolution from cache to Root -> TLD -> Authoritative.
     請描述 DNS 從快取到 Root -> TLD -> Authoritative 的流程。
+    <details>
+    <summary>Answer</summary>
+    1. **瀏覽器 cache** — 先查瀏覽器自己的快取
+    2. **OS cache** — 查作業系統 DNS cache（含 `/etc/hosts`）
+    3. **Router cache** — 查家用路由器的 DNS 快取
+    4. **Recursive Resolver**（ISP, Internet Service Provider / `8.8.8.8`）— 有快取直接回傳
+    5. **Root Nameserver** — 回答「去問 `.com` TLD server」
+    6. **TLD Nameserver**（Top-Level Domain，`.com`）— 回答「去問 `google.com` Authoritative server」
+    7. **Authoritative Nameserver** — 回傳最終 IP（如 `142.250.80.46`）
+    8. **回傳 + 快取** — Resolver 快取結果（TTL 秒數），並回傳給用戶端
 
-16. Where is recursive query used, and where is iterative query used in DNS resolution?  
+    ```
+    Browser cache
+      → OS cache
+        → Router cache
+          → Recursive Resolver (ISP / 8.8.8.8)
+            → Root NS:       "問 .com TLD"
+            → TLD NS (.com): "問 google.com NS"
+            → Authoritative: "IP = 142.250.80.46"
+        ← 快取並回傳
+      ← 拿到 IP，建立 TCP 連線
+    ```
+
+    - 前三層命中就不往下查
+    - Root server 全球 13 組（anycast，實際幾百台）
+    - Authoritative server 是最終答案來源
+    </details>
+
+16. Where is recursive query used, and where is iterative query used in DNS resolution?
     DNS 哪裡用遞迴查詢？哪裡用迭代查詢？
+    <details>
+    <summary>Answer</summary>
+    - **遞迴查詢（Recursive Query）**：用戶端 → Recursive Resolver
+      - 用戶端把問題丟給 Resolver，等 Resolver 幫你查完回傳最終答案
+      - 用戶端不需要自己跑流程，全部交給 Resolver 處理
 
-17. What is the difference between a recursive resolver and an authoritative nameserver?  
+    - **迭代查詢（Iterative Query）**：Recursive Resolver → Root → TLD → Authoritative
+      - Resolver 每次問一個 server，對方不直接給答案，而是「轉介」下一個 server
+      - Resolver 自己一步一步往下問，直到拿到最終 IP
+
+    ```
+    用戶端  →（recursive）→  Resolver
+                              ↓（iterative）
+                           Root NS → "去問 TLD"
+                              ↓
+                           TLD NS → "去問 Authoritative"
+                              ↓
+                           Authoritative → IP
+    ```
+
+    </details>
+
+17. What is the difference between a recursive resolver and an authoritative nameserver?
     Recursive resolver 和 Authoritative nameserver 差異是什麼？
+    <details>
+    <summary>Answer</summary>
 
-18. What are common DNS record types (A, AAAA, CNAME, MX, TXT, NS)?  
+    |          | Recursive Resolver            | Authoritative Nameserver         |
+    | -------- | ----------------------------- | -------------------------------- |
+    | 角色     | 代理人，幫用戶端查詢          | 最終來源，擁有域名的真實記錄     |
+    | 資料來源 | 無自己的資料，向外查詢        | 直接存有 DNS records（A、MX 等） |
+    | 快取     | 會快取查詢結果（TTL）         | 不快取，直接回傳權威答案         |
+    | 例子     | `8.8.8.8`、`1.1.1.1`、ISP DNS | Google 自己的 NS、Cloudflare NS  |
+    - Recursive Resolver 是「中間人」，負責跑流程
+    - Authoritative Nameserver 是「終點」，負責給出最終答案
+    </details>
+
+18. What are common DNS record types (A, AAAA, CNAME, MX, TXT, NS)?
     常見 DNS record（A/AAAA/CNAME/MX/TXT/NS）各做什麼？
+    <details>
+    <summary>Answer</summary>
 
-19. What is TTL in DNS, and how does it affect propagation and caching?  
+    | Record    | 用途                                         | 範例                               |
+    | --------- | -------------------------------------------- | ---------------------------------- |
+    | **A**     | 域名 → IPv4                                  | `google.com → 142.250.80.46`       |
+    | **AAAA**  | 域名 → IPv6                                  | `google.com → 2404:6800::...`      |
+    | **CNAME** | 域名 → 另一個域名（別名）                    | `www.example.com → example.com`    |
+    | **MX**    | 指定收信的郵件伺服器                         | `example.com → mail.example.com`   |
+    | **TXT**   | 存放任意文字，常用於驗證                     | SPF、DKIM、Google 網站驗證         |
+    | **NS**    | 指定該域名由哪個 Authoritative Nameserver 管 | `example.com → ns1.cloudflare.com` |
+    - CNAME(Canonical Name) 不能用在根域名（`example.com`），只能用在子域名（`www.example.com`）
+    - MX 有優先權數字，數字越小優先級越高
+    </details>
+
+19. What is TTL in DNS, and how does it affect propagation and caching?
     DNS 的 TTL 是什麼？對快取與生效時間有何影響？
+    <details>
+    <summary>Answer</summary>
+
+    **TTL（Time To Live）** 是 DNS record 上設定的數字（單位：秒），告訴 Resolver 這筆記錄可以快取多久。
+
+    - TTL = 300 → Resolver 快取 5 分鐘，5 分鐘後才重新查詢
+    - TTL 到期前，即使你改了 DNS record，用戶端仍會拿到舊的快取結果
+
+    **對快取的影響：**
+    - TTL 大（如 86400，一天）→ 快取久，查詢少，但改動生效慢
+    - TTL 小（如 60，一分鐘）→ 快取短，改動生效快，但查詢頻率高
+
+    **實務應用：**
+    - 計劃做 DNS 切換（換 IP、換 CDN）前，提前把 TTL 調小（如 300），讓舊快取快點過期
+    - 切換完成後再把 TTL 調回大值，減少查詢壓力
+    </details>
 
 20. What is TCP, and what makes it reliable?  
     什麼是 TCP？它為什麼可靠？
