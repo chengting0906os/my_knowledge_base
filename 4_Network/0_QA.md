@@ -148,7 +148,6 @@
     - **遞迴查詢（Recursive Query）**：用戶端 → Recursive Resolver
       - 用戶端把問題丟給 Resolver，等 Resolver 幫你查完回傳最終答案
       - 用戶端不需要自己跑流程，全部交給 Resolver 處理
-
     - **迭代查詢（Iterative Query）**：Recursive Resolver → Root → TLD → Authoritative
       - Resolver 每次問一個 server，對方不直接給答案，而是「轉介」下一個 server
       - Resolver 自己一步一步往下問，直到拿到最終 IP
@@ -203,7 +202,6 @@
     <summary>Answer</summary>
 
     **TTL（Time To Live）** 是 DNS record 上設定的數字（單位：秒），告訴 Resolver 這筆記錄可以快取多久。
-
     - TTL = 300 → Resolver 快取 5 分鐘，5 分鐘後才重新查詢
     - TTL 到期前，即使你改了 DNS record，用戶端仍會拿到舊的快取結果
 
@@ -219,14 +217,73 @@
 20. What is TCP, and what makes it reliable?  
     什麼是 TCP？它為什麼可靠？
 
-21. Explain TCP three-way handshake and why sequence/ack numbers matter.  
+21. Explain TCP three-way handshake and why sequence/ack numbers matter.
     解釋 TCP 三向交握，sequence/ack number 的意義是什麼？
+    <details>
+    <summary>Answer</summary>
 
-22. How do flow control and congestion control differ in TCP?  
+    **三向交握流程：**
+
+    ```
+    Client                        Server
+      |  SYN (seq=x)                |
+      | --------------------------→ |  第一次：Client 發起連線，x 是隨機產生的初始序號（ISN, Initial Sequence Number）
+      |                             |
+      |  SYN-ACK (seq=y, ack=x+1)  |
+      | ←-------------------------- |  第二次：Server 同意，帶自己的 seq，並確認 x+1
+      |                             |
+      |  ACK (ack=y+1)              |
+      | --------------------------→ |  第三次：Client 確認 y+1，連線建立
+    ```
+
+    **Sequence Number（seq）：**
+    - 初始值是隨機產生的 ISN（Initial Sequence Number），避免被猜測或與舊連線混淆
+    - seq 是**資料流的 byte 偏移量**，不是封包編號
+    - 標記「這段資料在整個資料流裡從第幾個 byte 開始」
+    - 讓接收方能把亂序到達的封包依偏移量重新排列，並偵測遺失封包（發現 seq 有缺口就要求重傳）
+
+    **Acknowledgment Number（ack）：**
+    - ack 也是**資料流的 byte 偏移量**，指向「下一個期望收到的 byte 位置」
+    - `ack = 對方的 seq + 收到的 byte 數`
+    - 告訴對方「0 ~ ack-1 我都收到了，請從 ack 繼續送」
+    - 用於確認收到、偵測遺失封包
+
+    **為什麼需要三次？**
+    - 一次：只有 Client 確認 Server 在線
+    - 兩次：只有 Server 確認 Client 在線
+    - 三次：雙方都確認對方能收能送，連線才算可靠建立
+    </details>
+
+22. How do flow control and congestion control differ in TCP?
     TCP 的 flow control 與 congestion control 差在哪？
+    <details>
+    <summary>Answer</summary>
 
-23. What are the key differences between TCP and UDP?  
+    |      | Flow Control                                                   | Congestion Control                                              |
+    | ---- | -------------------------------------------------------------- | --------------------------------------------------------------- |
+    | 目的 | 防止 sender 送太快，**接收方**來不及處理                       | 防止 sender 送太快，**網路**（路由器）來不及處理                |
+    | 針對 | 端對端（sender ↔ receiver）                                    | sender 與網路之間                                               |
+    | 機制 | Receiver 在 ack 裡帶 **Window Size**，告訴 sender 最多能送多少 | sender 維護 **Congestion Window（cwnd）**，偵測到封包遺失就縮小 |
+    - **Flow Control**：receiver 說「我 buffer 只剩 X bytes，你最多送 X」
+    - **Congestion Control**：sender 自己偵測網路壅塞（封包遺失、延遲增加），主動降速
+    </details>
+
+23. What are the key differences between TCP and UDP?
     TCP 與 UDP 的核心差異是什麼？
+    <details>
+    <summary>Answer</summary>
+
+    |                         | TCP                             | UDP                                   |
+    | ----------------------- | ------------------------------- | ------------------------------------- |
+    | 連線                    | 需要三向交握建立連線            | 無連線，直接送                        |
+    | 可靠性                  | 保證送達、有序、不重複          | 不保證送達，可能亂序、遺失            |
+    | 速度                    | 較慢（有 overhead）             | 較快（低延遲）                        |
+    | Flow/Congestion Control | 有                              | 無                                    |
+    | Header 大小             | 20 bytes                        | 8 bytes                               |
+    | 使用場景                | HTTP、SMTP、FTP（需要可靠傳輸） | DNS、影音串流、線上遊戲（需要低延遲） |
+    - TCP 用在「資料不能遺失」的場景
+    - UDP 用在「寧可掉包也要低延遲」的場景（如視訊通話掉幾幀比卡頓好）
+    </details>
 
 24. What is the OSI model, and what does each layer do?  
     什麼是 OSI Model？七層各自負責什麼？
