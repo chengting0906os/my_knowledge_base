@@ -78,14 +78,31 @@
 10. In practice, when would you return 200 vs 201 vs 204?  
     實務上什麼時候回 200、201、204？
 
-11. What is `301 Moved Permanently`, and when should you use it?  
+11. What is `301 Moved Permanently`, and when should you use it?
     `301 Moved Permanently` 什麼情況會用？
+    <details>
+    <summary>Answer</summary>
+    - 資源永久移到新 URL，瀏覽器會快取此重定向，之後直接去新 URL
+    - 用在網站搬家、URL 改版（如 http → https）
+    </details>
 
-12. What is `304 Not Modified`, and how does it relate to cache validation?  
+12. What is `304 Not Modified`, and how does it relate to cache validation?
     `304 Not Modified` 是什麼？和快取有什麼關係？
+    <details>
+    <summary>Answer</summary>
+    - server 告訴瀏覽器「你快取的還是最新版，直接用」，不回傳 body，省頻寬
+    - 搭配 ETag（If-None-Match）或 Last-Modified（If-Modified-Since）使用
+    </details>
 
-13. What are ETag and Last-Modified, and how do they work with conditional requests?  
+13. What are ETag and Last-Modified, and how do they work with conditional requests?
     ETag 與 Last-Modified 是什麼？如何配合條件式請求？
+    <details>
+    <summary>Answer</summary>
+    - 都是快取驗證機制，讓瀏覽器問 server「我快取的東西還有效嗎？」
+    - Last-Modified：資源最後修改時間；下次請求帶 `If-Modified-Since`，沒改則回 `304`
+    - ETag：資源的版本識別碼（hash）；下次請求帶 `If-None-Match`，一樣則回 `304`
+    - ETag 更精確：Last-Modified 精度只到秒，同一秒改兩次會失效；ETag 基於內容
+    </details>
 
 14. What is DNS, and why is it required before connecting to a website?  
     什麼是 DNS？為什麼連網站前一定要先做 DNS 解析？
