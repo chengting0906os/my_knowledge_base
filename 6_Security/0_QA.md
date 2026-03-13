@@ -420,5 +420,56 @@
 46. In distributed systems, why is Redis commonly used for rate limiting?  
     在分散式系統中，為什麼限流常用 Redis？
 
-47. What is fail-open vs fail-close in rate limiter design?  
+47. What is fail-open vs fail-close in rate limiter design?
     限流設計裡的 fail-open 和 fail-close 差異是什麼？
+
+48. What are common symmetric and asymmetric encryption algorithms?
+    對稱加密與非對稱加密各有哪些常見演算法？
+    <details>
+    <summary>Answer</summary>
+
+    **對稱加密（Symmetric）**：加解密用同一把金鑰
+
+    | 演算法 | 說明 |
+    | ------ | ---- |
+    | AES    | 目前最主流，128/192/256-bit key，安全且快速 |
+    | DES    | 已淘汰，key 太短（56-bit）不安全 |
+    | 3DES   | DES 的改良版，效能差，逐漸淘汰 |
+    | ChaCha20 | Google 推廣，適合行動裝置，TLS 1.3 支援 |
+
+    **非對稱加密（Asymmetric）**：公鑰加密、私鑰解密（或私鑰簽章、公鑰驗章）
+
+    | 演算法  | 說明 |
+    | ------- | ---- |
+    | RSA     | 最廣泛使用，常見 2048/4096-bit |
+    | ECC     | 橢圓曲線，同等安全性 key 更短、效能更好 |
+    | ECDSA   | ECC-based 數位簽章，JWT RS256 的替代方案 |
+    | DSA     | 早期數位簽章標準，已被 ECDSA 取代 |
+    | Diffie-Hellman (DH/ECDHE) | 金鑰交換用（不用於加密/簽章），TLS 握手常見 |
+
+    </details>
+
+49. What encryption algorithms does JWT use?
+    JWT 使用哪種加密演算法？
+    <details>
+    <summary>Answer</summary>
+
+    JWT 本身不加密內容，而是做**簽章（Signature）**，確保 token 未被竄改。常見演算法：
+
+    | 演算法 | 類型 | 說明 |
+    | ------ | ---- | ---- |
+    | HS256  | 對稱（HMAC） | 用同一個 secret 簽章與驗章；簡單但 server 間需共享 secret |
+    | RS256  | 非對稱（RSA） | 私鑰簽章、公鑰驗章；適合多服務場景，公鑰可公開發布 |
+    | ES256  | 非對稱（ECDSA） | 同 RS256 概念但用 ECC，key 更短、效能更好 |
+
+    **HS256 vs RS256 選哪個？**
+    - 單一服務：HS256 夠用，簡單
+    - 多個服務需驗證同一個 token（如 microservices）：RS256，不需要每個服務都持有 secret，只需要公鑰
+
+    **誰用非對稱（RS256/ES256）簽章？**
+    主要是 **Identity Provider（IdP）**，例如 Google、Apple、Okta、Auth0，或自建的 Auth Server。
+    Auth Server 用私鑰簽章發出 JWT，其他服務（resource servers）透過公開的 JWKS endpoint 取得公鑰驗章，不需要持有 secret，私鑰只有 Auth Server 知道，洩漏面最小。
+
+    補充：若需要真正加密 JWT 內容（payload 不可讀），要用 **JWE（JSON Web Encryption）**，這與 JWS（簽章）是不同規格。
+
+    </details>
