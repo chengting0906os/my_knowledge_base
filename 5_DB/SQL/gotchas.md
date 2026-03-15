@@ -82,17 +82,16 @@ FROM Employees AS a
 LEFT JOIN EmployeeUNI AS b ON a.id = b.id
 ```
 
-## JOIN 類型
+## MySQL 不支援 FULL JOIN / OUTER JOIN
 
-`JOIN` 預設是 `INNER JOIN`。
+```sql
+-- ❌ MySQL 不支援
+FULL JOIN ...
+OUTER JOIN ...
 
-| 寫法 | 等同於 | 說明 |
-|------|--------|------|
-| `JOIN` | `INNER JOIN` | 只保留兩邊都有對應的列 |
-| `LEFT JOIN` | `LEFT OUTER JOIN` | 保留左表所有列，右表沒對應的填 NULL |
-| `RIGHT JOIN` | `RIGHT OUTER JOIN` | 保留右表所有列，左表沒對應的填 NULL |
-
-> MySQL 不支援 `FULL JOIN` / `OUTER JOIN`，需要用 `LEFT JOIN UNION RIGHT JOIN` 模擬。
+-- ✅ 改用 LEFT JOIN 或 RIGHT JOIN
+LEFT JOIN ...
+```
 
 ## Ambiguous Column：兩表同名欄位要加前綴
 
@@ -118,40 +117,3 @@ GROUP BY customer_id
 ```
 
 > 規則：SELECT 裡有 `COUNT / SUM / AVG / MAX / MIN`，其他非聚合欄位都要放進 `GROUP BY`。
-
-## 日期處理：DATEDIFF 與 INTERVAL
-
-**DATEDIFF**：計算兩個日期相差幾天
-
-```sql
-DATEDIFF(date1, date2)  -- 回傳 date1 - date2 的天數
-
--- 找相差 1 天的列
-WHERE DATEDIFF(w1.recordDate, w2.recordDate) = 1
-```
-
-**INTERVAL**：對日期做加減
-
-```sql
-date + INTERVAL 1 DAY   -- 加一天
-date - INTERVAL 1 MONTH -- 減一個月
-date + INTERVAL 1 YEAR  -- 加一年
-```
-
-**兩種寫法比較（197. Rising Temperature）**
-
-```sql
--- 寫法一：INTERVAL（Self JOIN）
-SELECT w1.id
-FROM Weather w1
-JOIN Weather w2 ON w1.recordDate = w2.recordDate + INTERVAL 1 DAY
-WHERE w1.temperature > w2.temperature
-
--- 寫法二：DATEDIFF（Self JOIN）
-SELECT w1.id
-FROM Weather w1
-JOIN Weather w2 ON DATEDIFF(w1.recordDate, w2.recordDate) = 1
-WHERE w1.temperature > w2.temperature
-```
-
-> 兩種都正確，`INTERVAL` 更直覺，`DATEDIFF` 更明確。Self JOIN 的關鍵是給同一張表取不同 alias（`w1`、`w2`），讓它能跟自己比較。
