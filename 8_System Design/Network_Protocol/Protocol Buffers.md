@@ -21,7 +21,7 @@ message SeatReservedEvent {
     string booking_id = 1;
     int32 buyer_id = 2;
 }
-在 binary 中，不會出現 "booking_id" 字樣，也不會有 JSON 格式。 真正編碼只看：
+在 binary 中，不會出現 "booking_id" 字樣，也不會有 JSON 格式。真正編碼只看：
 - **欄位編號**
 - **wire type**
 - **value**
@@ -42,7 +42,7 @@ key = (field_number << 3) | wire_type
 
 
 ## **🔥 重點：Varint（變長編碼）**
-數字越小 → 編碼越短 常見資料（欄位編號、status code、索引）非常省空間。
+數字越小 → 編碼越短常見資料（欄位編號、status code、索引）非常省空間。
 例如：
 int32 = 150
 JSON:
@@ -98,7 +98,7 @@ Python 的 protobuf runtime 本體大部分是 C++，效能高很多。
 | 欄位名稱 | ❌ 不會編碼（只用編號） | 編碼，非常浪費 |
 
 
-你的系統是 **高 TPS seat reservation**、大量 booking events。 Protobuf 保證：
+你的系統是 **高 TPS seat reservation**、大量 booking events。Protobuf 保證：
 - 更快（反序列化是 C++）
 - 更小（省 Kafka 帶寬）
 - 更穩定（schema 版本更新安全）
@@ -120,7 +120,7 @@ buyer_id:
   varint(100) = 0x64
 總消息：
 0A 03 61 62 63 10 64
-只 7 bytes！ JSON 版本大概 40 bytes。
+只 7 bytes！JSON 版本大概 40 bytes。
 
 ## **📌 一句話總結原理**
 **Protobuf = 一個用 TLV + Varint 做最佳化的跨語言二進位資料格式，由 schema 驅動，並用自動生成的高效程式碼處理序列化與反序列化。**
@@ -132,5 +132,5 @@ buyer_id:
 - Field numbering rules
 - Backward/forward compatibility
 - Proto2 vs Proto3 的差異
-📌 或我可以畫出「你貼的那個 BookingCreatedEvent 的實際二進位編碼示意圖」 📌 或解析你現在的事件設計哪些欄位可以變更、哪些不能
+📌 或我可以畫出「你貼的那個 BookingCreatedEvent 的實際二進位編碼示意圖」📌 或解析你現在的事件設計哪些欄位可以變更、哪些不能
 你想深入哪一塊？
