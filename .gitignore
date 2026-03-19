@@ -3,3 +3,5 @@
 .DS_Store
 output/
 *.dSYM
+__pycache__/
+*.pyc
