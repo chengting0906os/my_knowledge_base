@@ -44,3 +44,4 @@ DP
 [72. Edit Distance](https://leetcode.com/problems/edit-distance/)
 [139. Word Break](https://leetcode.com/problems/word-break/) Time Complexity 並且應寫出兩種解法
 [300. Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/) 寫出 n^2 解 跟 nlog(n)
+[120. Triangle](https://leetcode.com/problems/triangle/)
