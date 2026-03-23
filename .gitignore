@@ -5,4 +5,5 @@ output/
 *.dSYM
 __pycache__/
 *.pyc
+tempCodeRunnerFile.py
 1002_Master
