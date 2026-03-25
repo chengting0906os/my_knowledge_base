@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: pg_explain_lab
+    environment:
+      POSTGRES_USER: lab
+      POSTGRES_PASSWORD: lab
+      POSTGRES_DB: lab
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
