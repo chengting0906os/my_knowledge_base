@@ -357,7 +357,38 @@ print(list(gen))
 
 ---
 
-## 20. Shallow Copy vs Deep Copy
+## 20. Generator StopIteration
+
+**Q: 第四個 `next(g)` 會發生什麼事？為什麼？**
+
+```python
+def gen():
+    yield 1
+    yield 2
+    yield 3
+
+g = gen()
+print(next(g))
+print(next(g))
+print(next(g))
+print(next(g))
+```
+
+---
+
+## 21. Tuple Immutability
+
+**Q: 執行這段程式碼會發生什麼事？為什麼？**
+
+```python
+a = (1, 2, 3)
+a[0] = 10
+print(a)
+```
+
+---
+
+## 22. Shallow Copy vs Deep Copy
 
 **Q: `shallow[0][0]` 和 `deep[0][0]` 的值分別是什麼？請解釋淺拷貝和深拷貝的差異。**
 
