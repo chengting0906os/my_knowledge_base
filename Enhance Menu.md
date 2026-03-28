@@ -26,7 +26,11 @@
   - [91. Decode Ways](https://leetcode.com/problems/decode-ways/)
 - Arrays & Hashing
   - [290. Word Pattern](https://leetcode.com/problems/word-pattern/) HashTable
+  - [705. Design HashSet](https://leetcode.com/problems/design-hashset/)
+  - [202. Happy Number](https://leetcode.com/problems/happy-number/) O(1) space
+  - [128. Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
 - Sliding Window
+  - [3. Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
 - Two Pointers
   - [125. Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
   - [15. 3Sum](https://leetcode.com/problems/3sum/)
@@ -43,3 +47,6 @@
 - BFS/DFS
   - [1926. Nearest Exit from Entrance in Maze](https://leetcode.com/problems/nearest-exit-from-entrance-in-maze/)
   - [909. Snakes and Ladders](https://leetcode.com/problems/snakes-and-ladders/)
+- Divide and Conquer
+  - [148. Sort List](https://leetcode.com/problems/sort-list/)
+  - [912. Sort an Array](https://leetcode.com/problems/sort-an-array/) (重點 Merge Sort 和 Quick Sort)
