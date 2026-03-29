@@ -311,7 +311,7 @@
     |---|---|---|
     | 用途 | 日常交易處理（下單、付款） | 分析、報表（月銷售、趨勢） |
     | 查詢特性 | 小量資料、高頻讀寫 | 大量資料、複雜聚合 |
-    | 資料量 | 數 GB | 數 TB ~ PB |
+    | 資料量 | 數 GB（Gigabyte） | 數 TB（Terabyte）~ PB（Petabyte） |
     | 優化方向 | 低延遲、高並發 | 高吞吐、Column Store |
     | 範例 | PostgreSQL、MySQL | Snowflake、BigQuery、Redshift |
 
