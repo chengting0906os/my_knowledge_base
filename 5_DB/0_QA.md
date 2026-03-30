@@ -77,6 +77,42 @@
    | 適合 | 高競爭、寫多場景 | 低競爭、讀多場景 |
    | 代價 | 鎖等待，吞吐量低 | 衝突時需 retry |
 
+   **悲觀鎖實作範例：**
+   ```sql
+   BEGIN;
+   SELECT * FROM orders WHERE order_id = 1 FOR UPDATE;  -- 鎖住這筆
+   UPDATE orders SET status = 'paid' WHERE order_id = 1;
+   COMMIT;
+   -- 其他交易若也要 SELECT FOR UPDATE 同一筆，會等待直到這個交易結束
+   ```
+
+   **樂觀鎖實作範例：**
+   ```sql
+   -- 先查，記住 version
+   SELECT * FROM orders WHERE order_id = 1;  -- 假設 version = 3
+
+   -- 更新時帶入 version，若被人改過 version 就不同，更新 0 筆
+   UPDATE orders
+   SET status = 'paid', version = version + 1
+   WHERE order_id = 1 AND version = 3;
+
+   -- 應用層檢查 affected rows，若為 0 表示衝突，需要 retry
+   ```
+
+   **使用情境：**
+   - 悲觀鎖：金融交易、庫存扣減（衝突代價高，不能 retry）
+   - 樂觀鎖：電商商品瀏覽、社群按讚（衝突少，retry 成本低）
+
+   **優缺點：**
+
+   | | 悲觀鎖 | 樂觀鎖 |
+   |--|--|--|
+   | ✅ 優點 | 衝突時不需 retry，資料一致性強 | 無鎖等待，高吞吐量 |
+   | ❌ 缺點 | 持鎖期間其他交易被阻塞，吞吐量低 | 衝突時需 retry，競爭高時效率差 |
+
+   **與 MVCC 的關係：**
+   MVCC 是資料庫底層機制，讓讀不阻寫、寫不阻讀。樂觀鎖是應用層概念，兩者可以並存——PostgreSQL 用 MVCC 處理讀寫並發，樂觀鎖則是在應用層額外防止「兩個寫同時發生」的衝突。
+
    </details>
 
 ---
@@ -554,5 +590,80 @@
     - 取「前 N 名」且並列也要都取 → `DENSE_RANK`
     - 取「第 N 筆」不管並列 → `ROW_NUMBER`
     - 標準競賽排名 → `RANK`
+
+---
+
+12. What is a VIEW? What are its use cases, pros/cons, and how does it differ from a CTE?
+    什麼是 VIEW？它的用途、優缺點？VIEW 和 CTE 有什麼差別？
+    <details>
+    <summary>Answer</summary>
+
+    **VIEW 是什麼：**
+    VIEW 不是真正的表，是一段儲存起來的 SQL 查詢，可以把它當成「虛擬表」來用。本身不儲存資料，每次查詢時動態執行底層 SQL。
+
+    ```sql
+    -- 建立 VIEW
+    CREATE VIEW high_salary_employees AS
+    SELECT name, salary, department
+    FROM employees
+    WHERE salary > 5000;
+
+    -- 之後直接這樣用，就像查一張表一樣
+    SELECT * FROM high_salary_employees;
+    ```
+
+    **優缺點：**
+
+    | | 說明 |
+    |--|--|
+    | ✅ 簡化複雜查詢 | 把複雜 SQL 包起來，之後直接呼叫 |
+    | ✅ 安全性 | 可以隱藏敏感欄位，只開放部分資料給使用者 |
+    | ✅ 重複使用 | 多個地方可以共用同一個 VIEW |
+    | ❌ 效能 | 每次查詢都會重新執行裡面的 SQL |
+    | ❌ 不能傳參數 | 條件是固定的 |
+
+    **VIEW vs CTE：**
+
+    | | VIEW | CTE |
+    |--|--|--|
+    | 存活時間 | 永久，存在資料庫裡 | 暫時，只在當次查詢有效 |
+    | 建立方式 | `CREATE VIEW` | `WITH ... AS` |
+    | 可重複使用 | ✅ 任何時候都能用 | ❌ 只能在當次查詢用 |
+    | 遞迴支援 | ❌ | ✅ Recursive CTE |
+    | 適合場景 | 常用的查詢邏輯 | 複雜查詢的中間步驟 |
+
+    **一般 VIEW vs Materialized VIEW：**
+
+    一般 VIEW 每次查才執行，不會先存結果。
+    Materialized VIEW 會真的把結果存成一張實體表，查詢時直接拿，不用重新執行 SQL。
+
+    ```sql
+    -- 一般 VIEW：每次查詢才執行
+    CREATE VIEW high_salary AS
+    SELECT name, salary FROM employees WHERE salary > 5000;
+
+    -- Materialized VIEW：先把結果存起來
+    CREATE MATERIALIZED VIEW high_salary AS
+    SELECT name, salary FROM employees WHERE salary > 5000;
+
+    -- 原始資料更新後，需要手動 REFRESH
+    REFRESH MATERIALIZED VIEW high_salary;
+    ```
+
+    | | 一般 VIEW | Materialized VIEW |
+    |--|--|--|
+    | 存資料 | ❌ 只存 SQL | ✅ 真的存結果 |
+    | 效能 | 較慢（每次重新執行） | 較快（直接拿結果） |
+    | 資料即時性 | ✅ 永遠最新 | ❌ 需要手動 REFRESH |
+    | 支援 DB | MySQL、PostgreSQL | 主要是 PostgreSQL |
+
+    Materialized VIEW 跟 INDEX 很像，都是用空間換時間，適合資料不常變動但查詢頻繁的場景（報表、統計）。
+
+    **一句話記法：**
+    - VIEW = 每次查才執行，資料永遠最新
+    - Materialized VIEW = 先存好結果，但資料可能過時，需要 REFRESH
+    - CTE = 只活在這次 SQL 裡的暫存查詢
+
+    </details>
 
     </details>
