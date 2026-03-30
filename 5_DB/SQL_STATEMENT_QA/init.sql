@@ -110,3 +110,52 @@ INSERT INTO suppliers VALUES
 (3, '全球零件股份公司',   'global@parts.com',      '台中'),
 (4, '精品配件行',         'lee@example.com',       '台南'),  -- 與顧客 email 重複
 (5, '南台灣物流公司',     'southlogistic@biz.com', '高雄');
+
+-- 部門
+CREATE TABLE departments (
+    department_id    INT PRIMARY KEY,
+    department_name  VARCHAR(100),
+    location         VARCHAR(50)
+);
+
+-- 員工
+CREATE TABLE employees (
+    employee_id    INT PRIMARY KEY,
+    name           VARCHAR(100),
+    department_id  INT REFERENCES departments(department_id),
+    salary         DECIMAL(10,2)
+);
+
+-- 假資料：部門
+INSERT INTO departments VALUES
+(1, '工程部', '台北'),
+(2, '業務部', '台中'),
+(3, '行銷部', '台北'),
+(4, '人資部', '高雄'),
+(5, '財務部', '台北');
+
+-- 假資料：員工（工程部 7 人、業務部 6 人、行銷部 4 人、人資部 3 人、財務部 2 人）
+-- HAVING > 5 應只顯示工程部(7)與業務部(6)
+INSERT INTO employees VALUES
+( 1, '王小明',  1, 85000),
+( 2, '陳大華',  1, 92000),
+( 3, '林志偉',  1, 78000),
+( 4, '張怡君',  1, 95000),
+( 5, '吳建宏',  1, 88000),
+( 6, '劉美玲',  1, 72000),
+( 7, '蔡俊賢',  1, 80000),
+( 8, '黃淑芬',  2, 65000),
+( 9, '鄭佳慧',  2, 70000),
+(10, '許明哲',  2, 68000),
+(11, '謝雅婷',  2, 73000),
+(12, '周建志',  2, 66000),
+(13, '盧怡萍',  2, 71000),
+(14, '江雨蓁',  3, 60000),
+(15, '方柏翰',  3, 58000),
+(16, '石宜臻',  3, 62000),
+(17, '葉庭語',  3, 59000),
+(18, '賴冠霖',  4, 55000),
+(19, '邱品蓉',  4, 57000),
+(20, '潘子晴',  4, 54000),
+(21, '洪睿哲',  5, 90000),
+(22, '簡宛如',  5, 88000);

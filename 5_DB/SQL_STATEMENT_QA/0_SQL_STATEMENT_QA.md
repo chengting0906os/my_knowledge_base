@@ -463,3 +463,38 @@ UNION ALL
 SELECT name, '供應商' AS source FROM suppliers;
 
 ```
+
+
+
+
+---
+
+### Q29. 顯示每個部門名稱及員工人數，只顯示人數超過 5 人的部門，依人數由高到低排序（JOIN + COUNT + HAVING）
+
+表結構：
+- `employees(employee_id, name, department_id, salary)`
+- `departments(department_id, department_name, location)`
+
+```sql
+SELECT d.department_name,
+       COUNT(e.employee_id) AS employee_count
+FROM departments d
+JOIN employees e ON d.department_id = e.department_id
+GROUP BY d.department_name
+HAVING COUNT(e.employee_id) > 5
+ORDER BY employee_count DESC;
+
+```
+
+---
+
+### Q30. 找出薪資高於公司整體平均薪資的員工，顯示 NAME 和 SALARY，依薪資由高到低排序（子查詢 Subquery）
+
+表結構：`employees(employee_id, name, salary, manager_id)`
+
+```sql
+SELECT NAME, SALARY
+FROM EMPLOYEES
+WHERE SALARY > (SELECT AVG(SALARY) FROM EMPLOYEES)
+ORDER BY SALARY DESC;
+```
