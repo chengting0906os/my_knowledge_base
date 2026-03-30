@@ -437,3 +437,122 @@
     **缺點：** 隱藏 SQL 細節（難優化）、容易產生 N+1 問題、複雜查詢需要 raw SQL、效能不如手寫 SQL
 
     </details>
+
+29. What is the SQL execution order?
+    SQL 的執行順序是什麼？
+    <details>
+    <summary>Answer</summary>
+
+    ```
+    1. FROM
+    2. JOIN
+    3. WHERE
+    4. GROUP BY
+    5. HAVING
+    6. SELECT      ← alias 在這步才被定義
+    7. ORDER BY
+    8. LIMIT
+    ```
+
+    **實際影響：**
+
+    | 子句 | 能不能用 SELECT 的 alias |
+    |---|---|
+    | WHERE | ❌ SELECT 還沒執行 |
+    | HAVING | ❌ SELECT 還沒執行 |
+    | ORDER BY | ✅ 在 SELECT 之後 |
+    | LIMIT | ✅ 在 SELECT 之後 |
+
+    所以 `HAVING SUM(amount) > 100000` 不能寫成 `HAVING amount > 100000`（alias），但 `ORDER BY amount DESC` 可以用 alias。
+
+    </details>
+
+30. What is the difference between UNION, UNION ALL, INTERSECT, and EXCEPT?
+    UNION、UNION ALL、INTERSECT、EXCEPT 的差異是什麼？
+    <details>
+    <summary>Answer</summary>
+
+    | 運算子 | 意思 | 去重 |
+    |---|---|---|
+    | `UNION` | 兩個查詢結果的**聯集** | ✅ 去重 |
+    | `UNION ALL` | 兩個查詢結果的**聯集** | ❌ 保留重複 |
+    | `INTERSECT` | 兩個查詢結果的**交集**（兩邊都有的） | ✅ 去重 |
+    | `EXCEPT` | 左邊有、右邊沒有的（**差集**） | ✅ 去重 |
+
+    **使用條件：** 兩個查詢的欄位數量和型別必須一致。
+
+    ```sql
+    -- UNION：合併兩年的門市清單（去重）
+    SELECT store_id FROM sales WHERE EXTRACT(YEAR FROM sale_date) = 2023
+    UNION
+    SELECT store_id FROM sales WHERE EXTRACT(YEAR FROM sale_date) = 2024;
+
+    -- EXCEPT：2024 有但 2023 沒有的門市
+    SELECT store_id FROM sales WHERE EXTRACT(YEAR FROM sale_date) = 2024
+    EXCEPT
+    SELECT store_id FROM sales WHERE EXTRACT(YEAR FROM sale_date) = 2023;
+
+    -- INTERSECT：2023 和 2024 都有銷售的門市
+    SELECT store_id FROM sales WHERE EXTRACT(YEAR FROM sale_date) = 2023
+    INTERSECT
+    SELECT store_id FROM sales WHERE EXTRACT(YEAR FROM sale_date) = 2024;
+    ```
+
+    **UNION vs UNION ALL：** `UNION ALL` 效能較好（不需要排序去重），若確定結果不會重複或不在意重複，優先用 `UNION ALL`。
+
+    </details>
+
+31. What is the difference between WHERE and HAVING?
+    WHERE 和 HAVING 的差異是什麼？
+    <details>
+    <summary>Answer</summary>
+
+    | | WHERE | HAVING |
+    |---|---|---|
+    | 執行時機 | GROUP BY 之前 | GROUP BY 之後 |
+    | 作用對象 | 原始 row | 聚合後的群組 |
+    | 能用聚合函式 | ❌ | ✅ |
+
+    ```sql
+    -- WHERE：先過濾原始資料，再聚合
+    SELECT store_id, SUM(amount)
+    FROM sales
+    WHERE sale_date >= '2024-01-01'   -- 先篩日期
+    GROUP BY store_id;
+
+    -- HAVING：聚合後再過濾
+    SELECT store_id, SUM(amount)
+    FROM sales
+    GROUP BY store_id
+    HAVING SUM(amount) > 100000;      -- 篩總額
+    ```
+
+    能用 WHERE 就用 WHERE，因為先過濾資料量少，聚合更快。
+
+    </details>
+
+32. What is the difference between RANK(), DENSE_RANK(), and ROW_NUMBER()?
+    RANK()、DENSE_RANK()、ROW_NUMBER() 的差異是什麼？
+    <details>
+    <summary>Answer</summary>
+
+    | 函式 | 並列時 | 並列後下一名 |
+    |---|---|---|
+    | `ROW_NUMBER()` | 強制給不同號碼 | 連續 |
+    | `RANK()` | 給相同號碼 | 跳號 |
+    | `DENSE_RANK()` | 給相同號碼 | 不跳號 |
+
+    ```
+    資料：500, 500, 300
+
+    ROW_NUMBER：1, 2, 3
+    RANK：       1, 1, 3   ← 跳過 2
+    DENSE_RANK： 1, 1, 2   ← 不跳號
+    ```
+
+    **什麼時候用哪個：**
+    - 取「前 N 名」且並列也要都取 → `DENSE_RANK`
+    - 取「第 N 筆」不管並列 → `ROW_NUMBER`
+    - 標準競賽排名 → `RANK`
+
+    </details>
