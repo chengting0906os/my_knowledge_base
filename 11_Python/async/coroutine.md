@@ -86,3 +86,6 @@ Event Loop 就像一個「任務調度員」
 
 > Coroutine 是「**自願暫停**」的函式，在等 I/O 的空檔把 CPU 讓給其他任務用，用單一 thread 模擬出並發的效果。
 > Thread 是「**被迫暫停**」，由 OS 決定什麼時候切換。
+
+
+https://docs.python.org/3/library/asyncio-task.html
