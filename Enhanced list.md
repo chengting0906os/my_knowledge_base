@@ -37,6 +37,7 @@
 - Stack
 - Binary Search
 - Backtracking
+  - [22. Generate Parentheses](https://leetcode.com/problems/generate-parentheses/) Time: O(4^n / √n)，Space: O(n)
 - Heap / Priority Queue
 - Intervals
 - Greedy
