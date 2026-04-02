@@ -24,6 +24,7 @@
   - [300. Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/) 寫出 n^2 解 跟 nlog(n)
   - [120. Triangle](https://leetcode.com/problems/triangle/)
   - [91. Decode Ways](https://leetcode.com/problems/decode-ways/)
+  - [5. Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) 寫出 O(n^2) time O(n) space 跟 O(n) time (Manacher's)
 - Arrays & Hashing
   - [290. Word Pattern](https://leetcode.com/problems/word-pattern/) HashTable
   - [705. Design HashSet](https://leetcode.com/problems/design-hashset/)
