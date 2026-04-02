@@ -404,3 +404,14 @@ original[0][0] = 99
 print(shallow[0][0])
 print(deep[0][0])
 ```
+
+
+---
+
+## 23. LEGB — Import 與 Global Scope 的綁定時機
+
+> 參考檔案：
+> - `11_Python/LEGB/ball.py`
+> - `11_Python/LEGB/tennis.py`
+
+**Q: 執行 `tennis.py` 後，四個 print 的輸出分別是什麼？**
