@@ -437,3 +437,107 @@ f = Fighter()
 f.attack()
 f.attack("sword")
 ```
+
+---
+
+## 25. `__str__` vs `__repr__`
+
+> 參考檔案：`11_Python/OOP/str_vs_repr.py`
+
+**Q: 四個 print 的輸出分別是什麼？`__str__` 和 `__repr__` 各在什麼時候被呼叫？**
+
+```python
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __repr__(self):
+        return f"Point({self.x}, {self.y})"
+
+    def __str__(self):
+        return f"({self.x}, {self.y})"
+
+
+p = Point(1, 2)
+print(p)
+print(repr(p))
+print(f"{p}")
+print([p])
+```
+
+---
+
+## 26. `@property` Without Setter
+
+> 參考檔案：`11_Python/OOP/property_no_setter.py`
+
+**Q: 執行這段程式碼會發生什麼事？`@property` 和一般 attribute 有什麼差異？**
+
+```python
+class Circle:
+    def __init__(self, radius):
+        self._radius = radius
+
+    @property
+    def radius(self):
+        return self._radius
+
+    @property
+    def area(self):
+        return 3.14 * self._radius ** 2
+
+
+c = Circle(5)
+print(c.radius)
+print(c.area)
+c.radius = 10
+```
+
+---
+
+## 27. `__eq__` Kills `__hash__`
+
+> 參考檔案：`11_Python/OOP/eq_hash.py`
+
+**Q: `print(a == b)` 和 `print(hash(a))` 的輸出是什麼？`{a, b}` 那行會發生什麼事？為什麼定義 `__eq__` 會影響 hashability？**
+
+```python
+class Card:
+    def __init__(self, value):
+        self.value = value
+
+    def __eq__(self, other):
+        return self.value == other.value
+
+
+a = Card(1)
+b = Card(1)
+
+print(a == b)
+print(hash(a))
+my_set = {a, b}
+```
+
+---
+
+## 28. `isinstance` vs `type`
+
+> 參考檔案：`11_Python/OOP/isinstance_vs_type.py`
+
+**Q: 四個 print 的輸出分別是什麼？`isinstance` 和 `type ==` 有什麼差異？**
+
+```python
+class Animal:
+    pass
+
+class Dog(Animal):
+    pass
+
+d = Dog()
+
+print(type(d) == Animal)
+print(type(d) == Dog)
+print(isinstance(d, Animal))
+print(isinstance(d, Dog))
+```
