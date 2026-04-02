@@ -415,3 +415,25 @@ print(deep[0][0])
 > - `11_Python/LEGB/tennis.py`
 
 **Q: 執行 `tennis.py` 後，四個 print 的輸出分別是什麼？**
+
+---
+
+## 24. Method Overloading
+
+> 參考檔案：`11_Python/OOP/method_overloading.py`
+
+**Q: 執行這段程式碼會發生什麼事？**
+
+```python
+class Fighter:
+    def attack(self):
+        print("punch")
+
+    def attack(self, weapon):
+        print(f"attack with {weapon}")
+
+
+f = Fighter()
+f.attack()
+f.attack("sword")
+```
