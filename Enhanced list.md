@@ -19,7 +19,7 @@
   - [198. House Robber](https://leetcode.com/problems/house-robber/)
   - [714. Best Time to Buy and Sell Stock with Transaction Fee](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)
   - [1143. Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/)
-  - [72. Edit Distance](https://leetcode.com/problems/edit-distance/)
+  - [72. Edit Distance](https://leetcode.com/problems/edit-distance/) 寫出 recursive 與 iterative 兩種解法
   - [139. Word Break](https://leetcode.com/problems/word-break/) Time Complexity 並且應寫出兩種解法
   - [300. Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/) 寫出 n^2 解 跟 nlog(n)
   - [120. Triangle](https://leetcode.com/problems/triangle/)
@@ -42,6 +42,7 @@
 - Heap / Priority Queue
 - Intervals
 - Greedy
+  - [918. Maximum Sum Circular Subarray](https://leetcode.com/problems/maximum-sum-circular-subarray/)
 - LRU cache
 - Matrix
   - [54. Spiral Matrix](https://leetcode.com/problems/spiral-matrix/)
@@ -49,6 +50,8 @@
 - BFS/DFS
   - [1926. Nearest Exit from Entrance in Maze](https://leetcode.com/problems/nearest-exit-from-entrance-in-maze/)
   - [909. Snakes and Ladders](https://leetcode.com/problems/snakes-and-ladders/)
+- Kadane's Algorithm
+  - [53. Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
 - Divide and Conquer
   - [148. Sort List](https://leetcode.com/problems/sort-list/)
   - [912. Sort an Array](https://leetcode.com/problems/sort-an-array/) (重點 Merge Sort 和 Quick Sort)
