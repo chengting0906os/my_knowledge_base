@@ -14,6 +14,7 @@
 **LeetCode**
 
 - Graphs
+  - [787. Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/) 三種解法：Bellman-Ford、Dijkstra、Shortest Path Faster Algorithm
 - DP
   - [746. Min Cost Climbing Stairs](https://leetcode.com/problems/min-cost-climbing-stairs/)
   - [198. House Robber](https://leetcode.com/problems/house-robber/)
