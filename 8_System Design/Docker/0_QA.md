@@ -197,7 +197,52 @@
 
    </details>
 
-6. What is `.dockerignore` and why should you use it?
+6. Why should you avoid creating too many layers in a Dockerfile?
+   為什麼不應該在 Dockerfile 中產生過多 layer？
+   <details>
+   <summary>Answer</summary>
+
+   每個 `RUN` 都是一個獨立的 layer，且每個 layer 都是**不可變的快照**。
+   即使後續的 `RUN` 刪除了前一層的檔案，那些位元組仍然存在於舊 layer 中，最終 image 仍然包含它們。
+
+   **壞寫法（3 個 layer，cache 沒有真正刪除）：**
+
+   ```dockerfile
+   FROM ubuntu:22.04
+   RUN apt-get update                      # layer 1：下載 package 清單
+   RUN apt-get install -y curl             # layer 2：安裝套件
+   RUN rm -rf /var/lib/apt/lists/*         # layer 3：試圖清除 cache
+   ```
+
+   Layer 1 和 Layer 2 的 `/var/lib/apt/lists/` 內容**仍然存在於 image 中**，只是在 layer 3 被「遮蓋」了。
+   Pull image 時這些 byte 還是要傳輸，image 並沒有變小。
+
+   **好寫法（1 個 layer，cache 真正消失）：**
+
+   ```dockerfile
+   FROM ubuntu:22.04
+   RUN apt-get update && \
+       apt-get install -y curl && \
+       rm -rf /var/lib/apt/lists/*         # 同一層清除，cache 不寫入任何 layer
+   ```
+
+   三個動作在同一個 layer 完成，cache 從未存入任何持久層，image 更小。
+
+   **影響整理：**
+
+   | 問題       | 說明                                        |
+   | ---------- | ------------------------------------------- |
+   | Image 變大 | 刪除動作只遮蓋舊 layer，不真正釋放空間      |
+   | Build 變慢 | layer 越多，每次 push/pull 需傳輸的中繼資料越多 |
+   | Cache 失效 | 過細的 layer 拆分讓 cache miss 範圍更廣     |
+
+   ***
+
+   Every `RUN` creates an immutable snapshot. Deleting files in a later `RUN` hides them from the filesystem view but doesn't remove their bytes from the earlier layer — they still bloat the image. Combine related commands in a single `RUN` with `&&` so cleanup happens in the same layer and is never persisted.
+
+   </details>
+
+7. What is `.dockerignore` and why should you use it?
    `.dockerignore` 是什麼？為什麼需要它？
    <details>
    <summary>Answer</summary>
